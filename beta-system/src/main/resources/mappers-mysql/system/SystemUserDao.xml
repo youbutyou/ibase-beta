@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.ibase.beta.system.dao.SystemUserDao">
+
+    <sql id="commonSelectColumnSql">
+        SELECT
+        a.id, a.sn,a.iname,a.password,a.phone,a.org_sn AS orgSn,
+        a.state,a.edit_time AS editTime,a.edit_user AS editUser
+    </sql>
+
+    <sql id="commonJoinSql">
+        FROM system_user a
+        WHERE 1 = 1
+    </sql>
+
+    <sql id="commonWhereSql">
+        <if test="iname != null and iname != ''">
+            AND a.iname = #{iname}
+        </if>
+        <if test="phone != null and phone != ''">
+            AND a.phone = #{phone}
+        </if>
+        <if test="state != null and state != ''">
+            AND a.state = #{state}
+        </if>
+        <if test="editTime != null and editTime != ''">
+            AND a.edit_time = #{editTime}
+        </if>
+    </sql>
+
+    <select id="countBySql" resultType="int">
+        SELECT COUNT(*)
+        <include refid="commonJoinSql"></include>
+        <include refid="commonWhereSql"></include>
+    </select>
+
+    <select id="queryBySql" resultType="cn.ibase.beta.system.dto.SystemUserDto" parameterType="cn.ibase.beta.system.dto.SystemUserDto">
+        <include refid="commonSelectColumnSql"></include>
+        <include refid="commonJoinSql"></include>
+        <include refid="commonWhereSql"></include>
+        <if test="order !=null and order != ''">
+            ORDER BY ${order}
+        </if>
+        <if test="offset != null and limit != null">
+            LIMIT #{offset},#{limit}
+        </if>
+    </select>
+
+    <select id="queryOneBySql" resultType="cn.ibase.beta.system.dto.SystemUserDto" parameterType="cn.ibase.beta.system.dto.SystemUserDto">
+        <include refid="commonSelectColumnSql"></include>
+        <include refid="commonJoinSql"></include>
+        <include refid="commonWhereSql"></include>
+        LIMIT 1
+    </select>
+
+    <select id="queryOneById" resultType="cn.ibase.beta.system.dto.SystemUserDto" parameterType="cn.ibase.beta.system.dto.SystemUserDto">
+        <include refid="commonSelectColumnSql"></include>
+        <include refid="commonJoinSql"></include>
+        AND a.id = #{id}
+        LIMIT 1
+    </select>
+
+    <insert id="insert" parameterType="cn.ibase.beta.system.dto.SystemUserDto" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO system_user(
+        `sn`,`iname`,`password`,`phone`,`org_sn`,`state`,`edit_time``edit_user`
+        )
+        VALUES(
+        #{sn},#{iname},#{password},#{phone},#{orgSn},#{state},#{editTime}#{editUser}
+        )
+    </insert>
+
+    <update id="update" parameterType="cn.ibase.beta.system.dto.SystemUserDto">
+        UPDATE system_user SET
+        `sn` = #{sn},
+        `iname` = #{iname},
+        `password` = #{password},
+        `phone` = #{phone},
+        `org_sn` = #{orgSn},
+        `state` = #{state},
+        `edit_time` = #{editTime}
+        `edit_user` = #{editUser}
+        WHERE id = #{id}
+    </update>
+
+    <delete id="delete" parameterType="java.util.Map">
+        DELETE FROM system_user
+        WHERE id IN
+        <foreach collection="idArray" index="index" item="item" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+    </delete>
+
+</mapper>

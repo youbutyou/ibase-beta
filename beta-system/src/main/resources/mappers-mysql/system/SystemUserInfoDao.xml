@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.ibase.beta.system.dao.SystemUserInfoDao">
+
+    <sql id="commonSelectColumnSql">
+        SELECT
+        a.id, a.user_sn AS userSn,a.gender,a.email,a.signature,a.edit_time AS editTime,
+        a.edit_user AS editUser
+    </sql>
+
+    <sql id="commonJoinSql">
+        FROM system_user_info a
+        WHERE 1 = 1
+    </sql>
+
+    <sql id="commonWhereSql">
+        <if test="gender != null and gender != ''">
+            AND a.gender = #{gender}
+        </if>
+        <if test="editTime != null and editTime != ''">
+            AND a.edit_time = #{editTime}
+        </if>
+    </sql>
+
+    <select id="countBySql" resultType="int">
+        SELECT COUNT(*)
+        <include refid="commonJoinSql"></include>
+        <include refid="commonWhereSql"></include>
+    </select>
+
+    <select id="queryBySql" resultType="cn.ibase.beta.system.dto.SystemUserInfoDto" parameterType="cn.ibase.beta.system.dto.SystemUserInfoDto">
+        <include refid="commonSelectColumnSql"></include>
+        <include refid="commonJoinSql"></include>
+        <include refid="commonWhereSql"></include>
+        <if test="order !=null and order != ''">
+            ORDER BY ${order}
+        </if>
+        <if test="offset != null and limit != null">
+            LIMIT #{offset},#{limit}
+        </if>
+    </select>
+
+    <select id="queryOneBySql" resultType="cn.ibase.beta.system.dto.SystemUserInfoDto" parameterType="cn.ibase.beta.system.dto.SystemUserInfoDto">
+        <include refid="commonSelectColumnSql"></include>
+        <include refid="commonJoinSql"></include>
+        <include refid="commonWhereSql"></include>
+        LIMIT 1
+    </select>
+
+    <select id="queryOneById" resultType="cn.ibase.beta.system.dto.SystemUserInfoDto" parameterType="cn.ibase.beta.system.dto.SystemUserInfoDto">
+        <include refid="commonSelectColumnSql"></include>
+        <include refid="commonJoinSql"></include>
+        AND a.id = #{id}
+        LIMIT 1
+    </select>
+
+    <insert id="insert" parameterType="cn.ibase.beta.system.dto.SystemUserInfoDto" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO system_user_info(
+        `user_sn`,`gender`,`email`,`signature`,`edit_time``edit_user`
+        )
+        VALUES(
+        #{userSn},#{gender},#{email},#{signature},#{editTime}#{editUser}
+        )
+    </insert>
+
+    <update id="update" parameterType="cn.ibase.beta.system.dto.SystemUserInfoDto">
+        UPDATE system_user_info SET
+        `user_sn` = #{userSn},
+        `gender` = #{gender},
+        `email` = #{email},
+        `signature` = #{signature},
+        `edit_time` = #{editTime}
+        `edit_user` = #{editUser}
+        WHERE id = #{id}
+    </update>
+
+    <delete id="delete" parameterType="java.util.Map">
+        DELETE FROM system_user_info
+        WHERE id IN
+        <foreach collection="idArray" index="index" item="item" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+    </delete>
+
+</mapper>
