@@ -5,14 +5,19 @@ package cn.ibase.beta.common.info;
  * @author Binbin.Yang1
  * @date 2019-03-06
  */
-public enum ResultMessageEnum {
+public enum ResultEnum {
 
 
     SYS_EXE_SUCCESS(200,"执行成功"),
     SYS_EXE_ERROR(500,"执行失败"),
-    SYS_USER_NOT_LOGIN(505,"登陆用户失效，请重新登录"),
-    SYS_LOGIN_ERROR(506,"用户名或密码错误，请重新登录"),
     SYS_PARAM_ERROR(507,"传入参数异常"),
+    SYS_FOND_ERROR(507,"未查询到数据"),
+
+    SYS_USER_NO_EXIST(513,"用户不存在"),
+    SYS_LOGIN_ERROR(506,"密码错误，请重试"),
+    SYS_LOGIN_SUCCESS(506,"登陆成功"),
+
+    SYS_USER_NOT_LOGIN(505,"登陆用户失效，请重新登录"),
     SYS_SEND_CODE_ERROR(508,"验证码发送失败"),
     SYS_SEND_CODE_SUCCESS(100,"验证码已发送"),
     SYS_SEND_CODE_HAS(509,"验证码已经发送，请稍后重试"),
@@ -21,7 +26,6 @@ public enum ResultMessageEnum {
     SYS_IMAGE_UPLOAD_EMPTY(512,"上传文件为空"),
     SYS_IMAGE_UPLOAD_TOO_BIG(511,"上传文件大小过大"),
     SYS_POSITION_ELECTRIC_FENCE(512,"不在规定范围内，不可进行此操作"),
-    SYS_USER_NO_EXIST(513,"用户不存在"),
     SYS_USER_STATUS_ERROR(514,"用户处于异常状态，请联系管理员"),
     SYS_USER_NO_PHONE(515,"用户没有关联手机，请联系管理员"),
 
@@ -183,7 +187,7 @@ public enum ResultMessageEnum {
 
     private String msg;
 
-    ResultMessageEnum(int state, String msg) {
+    ResultEnum(int state, String msg) {
         this.state = state;
         this.msg = msg;
     }
@@ -196,8 +200,8 @@ public enum ResultMessageEnum {
         return msg;
     }
 
-    public static ResultMessageEnum stateOf(int index) {
-        for (ResultMessageEnum state : values()) {
+    public static ResultEnum stateOf(int index) {
+        for (ResultEnum state : values()) {
             if (state.getState() == index) {
                 return state;
             }

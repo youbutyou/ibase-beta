@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.ibase.beta.system.dao.SystemDictionaryTypeDao">
+
+    <sql id="commonSelectColumnSql">
+        SELECT
+        a.id, a.sn,a.iname,a.psn,a.state,a.remark
+    </sql>
+
+    <sql id="commonJoinSql">
+        FROM system_dictionary_type a
+        WHERE 1 = 1
+    </sql>
+
+    <sql id="commonWhereSql">
+        <if test="sn != null and sn != ''">
+            AND a.sn = #{sn}
+        </if>
+        <if test="iname != null and iname != ''">
+            AND a.iname = #{iname}
+        </if>
+        <if test="psn != null and psn != ''">
+            AND a.psn = #{psn}
+        </if>
+        <if test="state != null and state != ''">
+            AND a.state = #{state}
+        </if>
+    </sql>
+
+    <select id="countBySql" resultType="int">
+        SELECT COUNT(*)
+        <include refid="commonJoinSql"></include>
+        <include refid="commonWhereSql"></include>
+    </select>
+
+    <select id="queryBySql" resultType="cn.ibase.beta.system.dto.SystemDictionaryTypeDto" parameterType="cn.ibase.beta.system.dto.SystemDictionaryTypeDto">
+        <include refid="commonSelectColumnSql"></include>
+        <include refid="commonJoinSql"></include>
+        <include refid="commonWhereSql"></include>
+        <if test="order !=null and order != ''">
+            ORDER BY ${order}
+        </if>
+        <if test="offset != null and limit != null">
+            LIMIT #{offset},#{limit}
+        </if>
+    </select>
+
+    <select id="queryOneBySql" resultType="cn.ibase.beta.system.dto.SystemDictionaryTypeDto" parameterType="cn.ibase.beta.system.dto.SystemDictionaryTypeDto">
+        <include refid="commonSelectColumnSql"></include>
+        <include refid="commonJoinSql"></include>
+        <include refid="commonWhereSql"></include>
+        LIMIT 1
+    </select>
+
+    <select id="queryOneById" resultType="cn.ibase.beta.system.dto.SystemDictionaryTypeDto" parameterType="cn.ibase.beta.system.dto.SystemDictionaryTypeDto">
+        <include refid="commonSelectColumnSql"></include>
+        <include refid="commonJoinSql"></include>
+        AND a.id = #{id}
+        LIMIT 1
+    </select>
+
+    <insert id="insert" parameterType="cn.ibase.beta.system.dto.SystemDictionaryTypeDto" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO system_dictionary_type(
+        `sn`,`iname`,`psn`,`state``remark`
+        )
+        VALUES(
+        #{sn},#{iname},#{psn},#{state}#{remark}
+        )
+    </insert>
+
+    <update id="update" parameterType="cn.ibase.beta.system.dto.SystemDictionaryTypeDto">
+        UPDATE system_dictionary_type SET
+        `sn` = #{sn},
+        `iname` = #{iname},
+        `psn` = #{psn},
+        `state` = #{state}
+        `remark` = #{remark}
+        WHERE id = #{id}
+    </update>
+
+    <delete id="delete" parameterType="java.util.Map">
+        DELETE FROM system_dictionary_type
+        WHERE id IN
+        <foreach collection="idArray" index="index" item="item" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+    </delete>
+
+</mapper>

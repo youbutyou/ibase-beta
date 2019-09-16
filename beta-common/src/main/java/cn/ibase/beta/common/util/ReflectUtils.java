@@ -161,7 +161,7 @@ public class ReflectUtils {
      * @return 是否
      */
     public static boolean isStatic(Object field) {
-        return java.lang.reflect.Modifier.isStatic((Integer) invokeMethod(field, "getModifiers", null));
+        return java.lang.reflect.Modifier.isStatic((Integer) invokeMethod(field, "getModifiers",  new  Object[]{}));
     }
 
     /**
@@ -171,7 +171,7 @@ public class ReflectUtils {
      * @return 是否
      */
     public static boolean isFinal(Object field) {
-        return java.lang.reflect.Modifier.isFinal((Integer) invokeMethod(field, "getModifiers", null));
+        return java.lang.reflect.Modifier.isFinal((Integer) invokeMethod(field, "getModifiers",  new  Object[]{}));
     }
 
     /**
@@ -181,7 +181,7 @@ public class ReflectUtils {
      * @return 是否
      */
     public static boolean isPublic(Object field) {
-        return java.lang.reflect.Modifier.isPublic((Integer) invokeMethod(field, "getModifiers", null));
+        return java.lang.reflect.Modifier.isPublic((Integer) invokeMethod(field, "getModifiers",  new  Object[]{}));
     }
 
     /**
@@ -191,7 +191,7 @@ public class ReflectUtils {
      * @return 是否
      */
     public static boolean isPrivate(Object field) {
-        return java.lang.reflect.Modifier.isPrivate((Integer) invokeMethod(field, "getModifiers", null));
+        return java.lang.reflect.Modifier.isPrivate((Integer) invokeMethod(field, "getModifiers",  new  Object[]{}));
     }
 
     /**
@@ -201,7 +201,7 @@ public class ReflectUtils {
      * @return 是否
      */
     public static boolean isProtected(Object field) {
-        return java.lang.reflect.Modifier.isProtected((Integer) invokeMethod(field, "getModifiers", null));
+        return java.lang.reflect.Modifier.isProtected((Integer) invokeMethod(field, "getModifiers",  new  Object[]{}));
     }
 
 

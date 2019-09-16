@@ -3,6 +3,7 @@ package cn.ibase.beta.system.controller;
 import cn.ibase.beta.common.controller.BaseController;
 import cn.ibase.beta.common.dto.DataPage;
 import cn.ibase.beta.common.dto.FormResult;
+import cn.ibase.beta.common.info.ResultEnum;
 import cn.ibase.beta.common.util.ResultUtil;
 import cn.ibase.beta.system.dto.SystemUserInfoDto;
 import cn.ibase.beta.system.service.SystemUserInfoService;
@@ -18,6 +19,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import javax.validation.constraints.NotNull;
+
 /**
  *  Controller
  * Created by Generator on 2019-09-11 12:26:20.
@@ -31,7 +34,7 @@ public class SystemUserInfoController extends BaseController {
     private SystemUserInfoService systemUserInfoService;
 
     @ApiOperation(value = "查询列表")
-    @RequestMapping(value = "/list", method = RequestMethod.GET)
+    @RequestMapping(value = "/list", method = RequestMethod.POST)
     @ResponseBody
     public DataPage<SystemUserInfoDto> showPageData(@ModelAttribute SystemUserInfoDto systemUserInfoDto) {
         return systemUserInfoService.showPageData(systemUserInfoDto);
@@ -41,13 +44,14 @@ public class SystemUserInfoController extends BaseController {
     @ApiImplicitParams({
         @ApiImplicitParam(name = "id", value = "id", required = true, dataType = "string", paramType = "query")
     })
-    @RequestMapping(value = "/edit", method = RequestMethod.GET)
+    @RequestMapping(value = "/edit", method = RequestMethod.POST)
     @ResponseBody
-    public FormResult<SystemUserInfoDto> load(Integer id) {
-        if (null != id && 0 <= id) {
-            return ResultUtil.createRightFormResult(systemUserInfoService.load(id));
+    public FormResult load(@NotNull Integer id) {
+        SystemUserInfoDto userInfoDto = systemUserInfoService.load(id);
+        if(null == userInfoDto){
+            return ResultUtil.createErrorFormResult(id, ResultEnum.SYS_FOND_ERROR);
         }
-        return null;
+        return ResultUtil.createRightFormResult(userInfoDto);
     }
     
     @ApiOperation(value = "保存")

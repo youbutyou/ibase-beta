@@ -3,7 +3,7 @@ package cn.ibase.beta.common.util;
 
 import cn.ibase.beta.common.dto.DataPage;
 import cn.ibase.beta.common.dto.FormResult;
-import cn.ibase.beta.common.info.ResultMessageEnum;
+import cn.ibase.beta.common.info.ResultEnum;
 
 import java.text.MessageFormat;
 import java.util.List;
@@ -27,7 +27,7 @@ public class ResultUtil {
      * @return
      */
     public static <T> DataPage<T> createRightDataPage(List<T> list, int total){
-        return createDataPage(list,total,true, ResultMessageEnum.SYS_EXE_SUCCESS);
+        return createDataPage(list,total,true, ResultEnum.SYS_EXE_SUCCESS);
     }
 
     /**
@@ -36,7 +36,7 @@ public class ResultUtil {
      * @param total
      * @return
      */
-    public static <T> DataPage<T> createErrorDataPage(List<T> list, int total, ResultMessageEnum resultEnum){
+    public static <T> DataPage<T> createErrorDataPage(List<T> list, int total, ResultEnum resultEnum){
         return createDataPage(list,total, false,resultEnum);
     }
 
@@ -49,7 +49,7 @@ public class ResultUtil {
      * @param <T>
      * @return
      */
-    private static <T> DataPage<T> createDataPage(List<T> list, int total, boolean flag,ResultMessageEnum resultEnum){
+    private static <T> DataPage<T> createDataPage(List<T> list, int total, boolean flag, ResultEnum resultEnum){
         DataPage<T> data = new DataPage<>();
         data.setData(list);
         data.setTotal(total);
@@ -67,7 +67,7 @@ public class ResultUtil {
      * @return
      */
     public static <T> FormResult<T> createRightFormResult(T data){
-        return createFormResult(data,true,ResultMessageEnum.SYS_EXE_SUCCESS);
+        return createFormResult(data,true, ResultEnum.SYS_EXE_SUCCESS);
     }
     /**
      * 创建非分页接口返回数据信息（正确）
@@ -76,8 +76,8 @@ public class ResultUtil {
      * @param <T>
      * @return
      */
-    public static <T> FormResult<T> createRightFormResult(T data,ResultMessageEnum resultMessageEnum){
-        return createFormResult(data,true,resultMessageEnum);
+    public static <T> FormResult<T> createRightFormResult(T data, ResultEnum resultEnum){
+        return createFormResult(data,true, resultEnum);
     }
     /**
      * 创建非分页接口返回数据信息（正确）
@@ -86,8 +86,8 @@ public class ResultUtil {
      * @param <T>
      * @return
      */
-    public static <T> FormResult<T> createRightFormResult(T data,ResultMessageEnum resultMessageEnum,String message){
-        return createFormResultWithParam(data,true,resultMessageEnum,message);
+    public static <T> FormResult<T> createRightFormResult(T data, ResultEnum resultEnum, String message){
+        return createFormResultWithParam(data,true, resultEnum,message);
     }
 
     /**
@@ -96,7 +96,7 @@ public class ResultUtil {
      * @param <T>
      * @return
      */
-    public static <T> FormResult<T> createErrorFormResult(T data,ResultMessageEnum resultEnum){
+    public static <T> FormResult<T> createErrorFormResult(T data, ResultEnum resultEnum){
         return createFormResult(data,false,resultEnum);
     }
     /**
@@ -120,7 +120,7 @@ public class ResultUtil {
      * @param <T>
      * @return
      */
-    public static <T> FormResult<T> createErrorFormResultWithParam(T data,ResultMessageEnum resultEnum,String param){
+    public static <T> FormResult<T> createErrorFormResultWithParam(T data, ResultEnum resultEnum, String param){
         return createFormResultWithParam(data,false,resultEnum,param);
     }
 
@@ -132,7 +132,7 @@ public class ResultUtil {
      * @param <T>
      * @return
      */
-    private static <T> FormResult<T> createFormResult(T data,boolean flag,ResultMessageEnum resultEnum){
+    public static <T> FormResult<T> createFormResult(T data, boolean flag, ResultEnum resultEnum){
         FormResult<T> result = new FormResult<>();
         result.setData(data);
         result.setSuccess(flag);
@@ -149,7 +149,7 @@ public class ResultUtil {
      * @param <T>
      * @return
      */
-    private static <T> FormResult<T> createFormResultWithParam(T data,boolean flag,ResultMessageEnum resultEnum,String param){
+    public static <T> FormResult<T> createFormResultWithParam(T data, boolean flag, ResultEnum resultEnum, String param){
         FormResult<T> result = new FormResult<>();
         result.setData(data);
         result.setSuccess(flag);
