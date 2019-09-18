@@ -1,0 +1,15 @@
+
+/**
+ * css 公用文件
+ */
+@import "/resources/css/layui/css/layui.css";
+
+html,body{
+    height: 100%;
+}
+.layui-layout-body{
+    height: 100%;
+}
+.layui-tab-item{
+    height: 100%;
+}

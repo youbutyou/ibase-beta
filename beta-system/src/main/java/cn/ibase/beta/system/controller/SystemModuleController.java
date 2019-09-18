@@ -4,6 +4,7 @@ import cn.ibase.beta.common.controller.BaseController;
 import cn.ibase.beta.common.dto.DataPage;
 import cn.ibase.beta.common.dto.FormResult;
 import cn.ibase.beta.common.dto.NavData;
+import cn.ibase.beta.common.dto.Result;
 import cn.ibase.beta.common.info.ResultEnum;
 import cn.ibase.beta.common.util.ResultUtil;
 import cn.ibase.beta.system.dto.SystemModuleDto;
@@ -53,32 +54,6 @@ public class SystemModuleController extends BaseController {
         return systemModuleService.showPageData(systemModuleDto);
     }
 
-
-
-    @ApiOperation(value = "查询列表")
-    @RequestMapping(value = "/listwithchildren", method = RequestMethod.POST)
-    @ResponseBody
-    public List<NavData> listWithChildren(@ModelAttribute SystemModuleDto systemModuleDto) {
-        List<SystemModuleDto> list = systemModuleService.loadList(systemModuleDto);
-        List<NavData> nav = new ArrayList<>(list.size());
-        list.forEach(item->{
-            if(StringUtils.isBlank(item.getpsn())){
-                nav.add(InfoUtil.moduleToNav(item));
-            }
-        });
-        for(NavData navData : nav){
-            list.forEach(item->{
-                if(navData.getSn().equals(item.getpsn())){
-                    if(null == navData.getChildren()){
-                        navData.setChildren(new ArrayList<>());
-                    }
-                    navData.getChildren().add(InfoUtil.moduleToNav(item));
-                }
-            });
-        }
-        return nav;
-    }
-
     @ApiOperation(value = "查询一条记录")
     @ApiImplicitParams({
         @ApiImplicitParam(name = "id", value = "id", required = true, dataType = "string", paramType = "query")
@@ -110,6 +85,48 @@ public class SystemModuleController extends BaseController {
     public FormResult<String> delete(String ids) {
         Integer count = systemModuleService.delete(ids);
         return ResultUtil.createRightFormResult(ids, ResultEnum.SYS_EXE_SUCCESS);
+    }
+
+
+
+
+    @ApiOperation(value = "查询列表")
+    @RequestMapping(value = "/listwithchildren", method = RequestMethod.POST)
+    @ResponseBody
+    public List<NavData> listWithChildren(@ModelAttribute SystemModuleDto systemModuleDto) {
+        List<SystemModuleDto> list = systemModuleService.loadList(systemModuleDto);
+        List<NavData> nav = new ArrayList<>(list.size());
+        list.forEach(item->{
+            if(StringUtils.isBlank(item.getpsn())){
+                nav.add(InfoUtil.moduleToNav(item));
+            }
+        });
+        for(NavData navData : nav){
+            list.forEach(item->{
+                if(navData.getSn().equals(item.getpsn())){
+                    if(null == navData.getChildren()){
+                        navData.setChildren(new ArrayList<>());
+                    }
+                    navData.getChildren().add(InfoUtil.moduleToNav(item));
+                }
+            });
+        }
+        return nav;
+    }
+
+    @ApiOperation(value = "获取工具栏")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "psn", value = "psn", required = true, dataType = "string", paramType = "query"),
+            @ApiImplicitParam(name = "dicSns", value = "dicSns(多个使用逗号隔开)", required = true, dataType = "string", paramType = "query")
+    })
+    @RequestMapping(value = "/toolbar", method = RequestMethod.POST)
+    @ResponseBody
+    public FormResult getToolbar(@ModelAttribute SystemModuleDto systemModuleDto) {
+        if(null == systemModuleDto || StringUtils.isBlank(systemModuleDto.getpsn())){
+            return ResultUtil.createErrorFormResult(systemModuleDto, ResultEnum.SYS_PARAM_ERROR);
+        }
+        List<SystemModuleDto> list = systemModuleService.loadList(systemModuleDto);
+        return ResultUtil.createRightFormResult(list);
     }
 
 }

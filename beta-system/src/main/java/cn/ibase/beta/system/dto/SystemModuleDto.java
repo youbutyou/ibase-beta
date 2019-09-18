@@ -10,7 +10,20 @@ import java.util.List;
  */
 public class SystemModuleDto extends SystemModule{
 
+    /**
+     * 字典类型
+     */
+    private List<String> dicSns;
+
     private List<SystemModuleDto> children;
+
+    public List<String> getDicSns() {
+        return dicSns;
+    }
+
+    public void setDicSns(List<String> dicSns) {
+        this.dicSns = dicSns;
+    }
 
     public List<SystemModuleDto> getChildren() {
         return children;

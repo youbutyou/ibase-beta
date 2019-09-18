@@ -3,67 +3,51 @@
 <head>
     <title></title>
     <meta content="text/html;charset=UTF-8" http-equiv="content-type">
+    <link href="/resources/common/commonCss.css" hreflang="zh_CN" rel="stylesheet" type="text/css">
 </head>
 <body>
-<div class="layui-layout-body" style="overflow: hidden;">
-    <table id="list_data" class="layui-table" lay-fiflter="list_data"></table>
+<div id="home1" class="layui-layout-body" style="overflow: hidden;">
+    <div style="display: none;">
+        <input id="modulesn" name="modulesn" value="${modulesn}">
+    </div>
+    <table id="list_data" class="layui-hide" lay-filter="list_table"></table>
 </div>
 </body>
-<script type="text/javascript" charset="UTF-8" src="/resources/css/layui/layui.js"></script>
-<script type="text/javascript" charset="UTF-8" src="/resources/js/jquery-3.4.1.min.js"></script>
+<script src="/resources/common/commonJs.js"></script>
 <script type="text/javascript" th:inline="none">
     layui.use(['layer', 'form','table'], function(){
+        // 获取工具栏
+        toolbar_table_getToolbar('dictionary',layui);
+        // 数据初始化
         var table = layui.table;
+        // 加载table
         table.render({
             elem: '#list_data',
             method:'POST',
-            height: 312,
             url: '/systemdictionary/list',
-            where:{state:"state_001"},
-            toolbar: true,
-            totalRow:true,
-            page:true,
-            limit:10,
-            limits:[10,20,30,40,50,60,70,80,90],
-            defaultToolbar: ['filter', 'print', 'exports', {
-                title: '提示' //标题
-                ,layEvent: 'LAYTABLE_TIPS' //事件名，用于 toolbar 事件中使用
-                ,icon: 'layui-icon-tips' //图标类名
-            }],
-            skin: 'line' //行边框风格
-            ,even: true //开启隔行背景
+            where:{state:"state_001"}
+            ,height: $('#home1').height()
+            ,title: '用户表'
+            ,page: true //开启分页
+            ,toolbar: '#tool_bar' //开启工具栏，此处显示默认图标，可以自定义模板，详见文档
+            // ,totalRow: true //开启合计行
             ,cols: [[
                 {checkbox: true}
                 ,{field: 'id', title: 'ID',hide:true}
                 ,{field: 'sn', title: '编码'}
                 ,{field: 'iname', title: '名称'}
+                ,{field: 'dicTypeSn', title: '字典类型'}
+                ,{field: 'state', title: '数据状态'}
+                ,{fixed: 'right', align:'center', toolbar: '#row_bar'}
             ]],
             parseData: function(res) { //res 即为原始返回的数据
-                if(res.success){
-                    return {
-                        "code": 0, //解析接口状态
-                        "msg": res.message, //解析提示文本
-                        "count": res.total, //解析数据长度
-                        "data": res.rows //解析数据列表
-                    };
-                }
-                return {
-                    "code": res.state, //解析接口状态
-                    "msg": res.message, //解析提示文本
-                    "count": res.total, //解析数据长度
-                    "data": res.rows //解析数据列表
-                };
+                return toolbar_parseTableData(res);
              }
-            ,done:function (res, curr, count) {
-                // console.log(res);
-                // console.log(curr);
-                // console.log(count);
-            }
         });
-        // table.reload('list_data', {page: {
-        //         curr: 1 //重新从第 1 页开始
-        //     }
-        // });
+        //监听头工具栏事件
+        toolbar_table_toolbarOn('list_table', layui);
+        //监听行工具事件
+        toolbar_table_toolOn('list_table', layui);
     });
 </script>
 </html>

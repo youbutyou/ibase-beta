@@ -6,7 +6,7 @@
 	<meta name="renderer" content="webkit">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
 	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-	<link rel="stylesheet" href="/resources/css/layui/css/layui.css"  media="all">
+	<link href="/resources/common/commonCss.css" hreflang="zh_CN" rel="stylesheet" type="text/css">
 	<link href="/resources/css/main.css" hreflang="zh_CN" rel="stylesheet" type="text/css">
 </head>
 <body class="layui-layout-body">
@@ -53,16 +53,14 @@
 			</div>
 		</div>
 		<div class="layui-body" style="bottom: 0;border-left: solid 2px #1AA094;" id="admin-body">
-			<div class="layui-tab admin-nav-card layui-tab-brief" lay-allowClose="true" lay-filter="tab-content">
+			<div class="layui-tab admin-nav-card layui-tab-brief" lay-allowClose="true" lay-filter="tab-content" style="height: calc(100% - 20px)">
 				<ul class="layui-tab-title"></ul>
-				<div class="layui-tab-content" style="padding: 5px 0 0 0;"></div>
+				<div class="layui-tab-content" style="padding: 5px 0 0 0; height: calc(100% - 46px)"></div>
 			</div>
 		</div>
 	</div>
 </body>
-<script type="text/javascript" charset="UTF-8" src="/resources/css/layui/layui.js"></script>
-<script type="text/javascript" charset="UTF-8" src="/resources/js/jquery-3.4.1.min.js"></script>
-<script type="text/javascript" charset="UTF-8" src="/resources/js/tree.js"></script>
+<script src="/resources/common/commonJs.js"></script>
 <script type="text/javascript">
 	layui.config({
 		base: '/resources/css/layui/lay/modules/'   //navbar组件js所在目录
@@ -83,7 +81,7 @@
 		navbar.render();
 		//监听导航点击
 		element.on('nav', function(elem){
-			layer.msg(elem.text());
+			// layer.msg(elem.text());
 			var fileType = $(this)[0].dataset.type;
 			if("file_002" === fileType){
 				// 目录类型不做处理
@@ -108,7 +106,7 @@
                 url += "?modulesn="+ sn;
 				element.tabAdd('tab-content', {
 					title: title,
-					content: '<iframe data-frameid="'+sn+'" scrolling="auto" frameborder="0" src="'+url+'" style="width:100%;height:99%;"></iframe>',
+					content: '<iframe data-frameid="'+sn+'" scrolling="auto" frameborder="0" src="'+url+'" style="width:100%;height:100%;"></iframe>',
 					id: sn
 				});
 			}
@@ -117,7 +115,7 @@
 		});
 		// 监听TAB
 		element.on('tab(tab-content)', function(elem){
-			layer.msg($(this).attr('lay-id'));
+			//layer.msg($(this).attr('lay-id'));
 		});
 	});
 

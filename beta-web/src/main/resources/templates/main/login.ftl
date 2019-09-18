@@ -3,7 +3,7 @@
 <head>
 	<title>登录</title>
 	<meta content="text/html;charset=UTF-8" http-equiv="content-type">
-	<link href="/resources/css/layui/css/layui.css" hreflang="zh_CN" rel="stylesheet" type="text/css">
+	<link href="/resources/common/commonCss.css" hreflang="zh_CN" rel="stylesheet" type="text/css">
 	<link href="/resources/css/login.css" hreflang="zh_CN" rel="stylesheet" type="text/css">
 </head>
 <body>
@@ -29,8 +29,7 @@
 	</form>
 </div>
 </body>
-<script type="text/javascript" charset="UTF-8" src="/resources/css/layui/layui.js"></script>
-<script type="text/javascript" charset="UTF-8" src="/resources/js/jquery-3.4.1.min.js"></script>
+<script src="/resources/common/commonJs.js"></script>
 <script type="text/javascript">
 	layui.use(['layer', 'form'], function(){
 		var layer = layui.layer

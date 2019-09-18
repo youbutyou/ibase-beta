@@ -35,6 +35,12 @@
         <if test="state != null and state != ''">
             AND a.state = #{state}
         </if>
+        <if test="dicSns != null">
+            AND a.dic_sn IN
+            <foreach collection="dicSns" index="index" item="item" open="(" separator="," close=")">
+            #{item,jdbcType=INTEGER}
+            </foreach>
+        </if>
     </sql>
 
     <select id="countBySql" resultType="int">
