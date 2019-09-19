@@ -61,20 +61,26 @@ function toolbar_table_getToolbar(sn,layui) {
 // 组装头工具栏
 function setToolbar(data) {
     var toolbar = document.getElementById("tool_bar");
-    var html = '<div class="layui-inline" lay-event="add">\n' +
-            '    <i class="layui-icon layui-icon-add-1"></i>\n' +
-            '    </div>\n' +
-            '    <div class="layui-inline" lay-event="del">\n' +
-            '    <i class="layui-icon layui-icon-delete"></i>\n' +
-            '    </div>';
+    var iconHtml = '';
+    if(data.sn === 'add'){
+        iconHtml = '<i class="layui-icon layui-icon-add-1"></i>\n';
+    }else if (data.sn === 'del'){
+        iconHtml = '<i class="layui-icon layui-icon-delete"></i>\n';
+    }
+    var html = '<div class="layui-inline" lay-event="' + data.sn + '">\n' +
+        (iconHtml === '' ? data.iname : iconHtml) + '</div>';
     toolbar.append(html);
 }
 // 组装行工具栏
 function setRowbar(data) {
     var toolbar = document.getElementById("row_bar");
-    var html = '<a class="layui-btn layui-btn-primary layui-btn-xs" lay-event="detail">查看</a>\n' +
-        '        <a class="layui-btn layui-btn-xs" lay-event="edit">编辑</a>\n' +
-        '        <a class="layui-btn layui-btn-danger  layui-btn-xs" lay-event="delete">删除</a>';
+    var classHtml = '';
+    if(data.sn === 'detail'){
+        classHtml = 'layui-btn-primary';
+    }else if(data.sn === 'del'){
+        classHtml = 'layui-btn-danger';
+    }
+    var html = '<a class="layui-btn layui-btn-xs ' + classHtml + '" lay-event="' + data.sn + '">' + data.iname + '</a>\n';
     toolbar.append(html);
 }
 

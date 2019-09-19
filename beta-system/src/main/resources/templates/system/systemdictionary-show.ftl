@@ -6,11 +6,11 @@
     <link href="/resources/common/commonCss.css" hreflang="zh_CN" rel="stylesheet" type="text/css">
 </head>
 <body>
-<div id="home1" class="layui-layout-body" style="overflow: hidden;">
+<div id="home1" class="layui-layout-body">
     <div style="display: none;">
         <input id="modulesn" name="modulesn" value="${modulesn}">
     </div>
-    <table id="list_data" class="layui-hide" lay-filter="list_table"></table>
+    <table id="list_data" lay-filter="list_table"></table>
 </div>
 </body>
 <script src="/resources/common/commonJs.js"></script>
@@ -33,6 +33,7 @@
             // ,totalRow: true //开启合计行
             ,cols: [[
                 {checkbox: true}
+                ,{type: 'numbers', title: '序号'}
                 ,{field: 'id', title: 'ID',hide:true}
                 ,{field: 'sn', title: '编码'}
                 ,{field: 'iname', title: '名称'}
@@ -42,7 +43,7 @@
             ]],
             parseData: function(res) { //res 即为原始返回的数据
                 return toolbar_parseTableData(res);
-             }
+            }
         });
         //监听头工具栏事件
         toolbar_table_toolbarOn('list_table', layui);

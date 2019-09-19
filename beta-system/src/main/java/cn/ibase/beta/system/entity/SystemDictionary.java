@@ -38,7 +38,7 @@ public class SystemDictionary extends BaseEntity {
     /**
      * 类型编码
      */
-    private byte[] dicTypeSn;
+    private String dicTypeSn;
 
     /**
      * 获取编号
@@ -149,7 +149,7 @@ public class SystemDictionary extends BaseEntity {
      *
      * @return dic_type_sn - 类型编码
      */
-    public byte[] getDicTypeSn() {
+    public String getDicTypeSn() {
         return dicTypeSn;
     }
 
@@ -158,7 +158,7 @@ public class SystemDictionary extends BaseEntity {
      *
      * @param dicTypeSn 类型编码
      */
-    public void setDicTypeSn(byte[] dicTypeSn) {
+    public void setDicTypeSn(String dicTypeSn) {
         this.dicTypeSn = dicTypeSn;
     }
 }
