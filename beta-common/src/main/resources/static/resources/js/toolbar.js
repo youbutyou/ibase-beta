@@ -20,11 +20,7 @@ function toolbar_parseTableData(res) {
         "data": res.rows //解析数据列表
     };
 }
-
-/**
- * 获取工具栏
- * @param sn
- */
+// 获取工具栏
 function toolbar_table_getToolbar(sn,layui) {
     $.ajax({
         type: "post",
@@ -37,7 +33,6 @@ function toolbar_table_getToolbar(sn,layui) {
         dataType: 'json',
         async: false,
         success: function (res) {
-            console.log(res);
             if(res && res.success){
                 for(var i = 0; i < res.data.length; i ++){
                     var item = res.data[i];
@@ -62,77 +57,232 @@ function toolbar_table_getToolbar(sn,layui) {
 function setToolbar(data) {
     var toolbar = document.getElementById("tool_bar");
     var iconHtml = '';
-    if(data.sn === 'add'){
-        iconHtml = '<i class="layui-icon layui-icon-add-1"></i>\n';
-    }else if (data.sn === 'del'){
-        iconHtml = '<i class="layui-icon layui-icon-delete"></i>\n';
+    if(data.icon && data.icon != ''){
+        iconHtml = '<i class="layui-icon ' + data.icon + '"></i>\n';
     }
-    var html = '<div class="layui-inline" lay-event="' + data.sn + '">\n' +
-        (iconHtml === '' ? data.iname : iconHtml) + '</div>';
+    var html = '';
+    if(iconHtml === ''){
+        html = '<div id="tb_' + data.sn +
+                    '" data-url="' + data.url +
+                    '" data-iname="' + data.iname +
+                    '" data-zindex="' + data.zindex +
+                    '" class="layui-btn layui-btn-xs" lay-event="' + data.sn + '">' +
+                    data.iname +
+                '</div>\n';
+    }else{
+        html = '<div id="tb_' + data.sn +
+                    '" data-url="' + data.url +
+                    '" data-iname="' + data.iname +
+                    '" data-zindex="' + data.zindex +
+                    '" class="layui-inline" lay-event="' + data.sn + '">\n' +
+                    (iconHtml === '' ? data.iname : iconHtml) +
+                '</div>';
+    }
     toolbar.append(html);
 }
 // 组装行工具栏
 function setRowbar(data) {
     var toolbar = document.getElementById("row_bar");
     var classHtml = '';
-    if(data.sn === 'detail'){
-        classHtml = 'layui-btn-primary';
-    }else if(data.sn === 'del'){
-        classHtml = 'layui-btn-danger';
+    if(data.icon && data.icon != ''){
+        classHtml = data.icon;
     }
-    var html = '<a class="layui-btn layui-btn-xs ' + classHtml + '" lay-event="' + data.sn + '">' + data.iname + '</a>\n';
+    var html = '<div id="rb_' + data.sn +
+                    '" data-url="' + data.url +
+                    '" data-iname="' + data.iname +
+                    '" data-zindex="' + data.zindex +
+                    '" class="layui-btn layui-btn-xs ' + classHtml +
+                    '" lay-event="' + data.sn + '">' +
+                    data.iname +
+                '</div>\n';
     toolbar.append(html);
 }
 
+// 增删改等方法的封装用于页面的重写
+function add(event, iname, url, object, zindex, w, h) {
+    toolbar_event_impl(event, iname, url, object, zindex, w, h);
+}
+function edit(event, iname, url, object, zindex, w, h) {
+    toolbar_event_impl(event, iname, url, object, zindex, w, h);
+}
+function detail(event, iname, url, object, zindex, w, h) {
+    toolbar_event_impl(event, iname, url, object, zindex, w, h);
+}
+// 删除
+function del(event, iname, url, object, zindex, w, h) {
+    var array = [];
+    if(Array.isArray(object)){
+        for(var i = 0; i < object.length; i ++){
+            array.push(object[i].id);
+        }
+    }else{
+        array.push(object.id);
+    }
+    var ids =array.join(",");
+    // 删除前检测，用于页面重写
+    if(!beforeDel(iname, url, ids, object)){
+        return;
+    }
+    $.ajax({
+        method: "POST",
+        url: url,
+        async: true,
+        dataType: "JSON",
+        data: {"ids": ids},
+        success: function (data) {
+            delSuccess(ids, data);
+        },
+        error: function (XMLHttpRequest, textStatus) {
+            layer.alert("请求异常，错误码：" + textStatus);
+        }
+    });
+}
+// 删除前
+function beforeDel(iname, url, ids, object) {
+    return true;
+}
+// 删除成功
+function delSuccess(ids, data) {
+    if(data && data.success){
+        layer.msg(data.message);
+        return;
+    }
+    layer.alert(data.message);
+}
+// 工具栏事件实现方法：新增、修改、详情
+function toolbar_event_impl(event, iname, url, object, zindex, w, h) {
+    layer.msg("点击" + iname);
+    // 检测url
+    if(url === 'null' || url === ''){
+        layer.msg("未配置url");
+        return;
+    }
+    // 配置层级
+    if(zindex === undefined || zindex === 'null' || zindex === ''){
+        zindex = 0;
+    }
+    // 配置窗口大小
+    w = (w && w !== '') ? w + 'px' : '800px';
+    h = (h && h !== '') ? h + 'px' : '600px';
+    // 配置按钮
+    var btn = [];
+    if(event === 'detail'){
+        btn = ['关闭'];
+    }else{
+        btn=['保存','关闭']
+    }
+    // 数据ID
+    var infoUrl = url.substring(0, url.lastIndexOf("/")) + '/add';
+    var saveUrl = url.substring(0, url.lastIndexOf("/")) + '/save';
+    // 弹出层
+    layer.open({
+        type: 2,
+        anim: 1,
+        resize:true,
+        maxmin: true,
+        title:iname,
+        area: [w, h],
+        content: infoUrl,
+        btn:btn,
+        zIndex: layer.zIndex + zindex, //重点1
+        success: function(layero, index){
+            // 层级置顶
+            layer.setTop(layero); //重点2
+            // 给表单赋值
+            if(event === 'edit' || event === 'detail'){
+                // 获取表单数据
+                $.ajax({
+                    method: "POST",
+                    url: url,
+                    data: {"id": object.id},
+                    async: true,
+                    dataType: "JSON",
+                    success: function (formData) {
+                        console.log(formData);
+                        var iframeWin = window[layero.find('iframe')[0]['name']];
+                        iframeWin.test(formData.data);
+                    },
+                    error: function (XMLHttpRequest, textStatus) {
+                        layer.alert("请求异常，错误码：" + textStatus);
+                    }
+                });
+            }
+        },
+        yes:function (index,layero) {
+            var forms = $(layero).find("form");
+            console.log(forms.length);
+            if(event === 'detail'){
+                layer.close(index);
+            }
+        },
+        cancel:function (index,layero) {
+        }
+    });
+}
+// 扩展头工具栏
+function toolbar_event_extend(event, iname, url, data, zindex) {
+    layer.msg("点击" + iname);
+}
+// 扩展行工具栏
+function rowbar_event_extend(event, iname, url, data, zindex) {
+    layer.msg("点击" + iname);
+}
 //监听头工具栏事件
 function toolbar_table_toolbarOn(layFilter,layui) {
     var table = layui.table;
     var layer = layui.layer;
+    // 监听头工具栏
     table.on('toolbar(' + layFilter + ')', function(obj){
         var checkStatus = table.checkStatus(obj.config.id)
             ,data = checkStatus.data; //获取选中的数据
+        // 获取工具栏url
+        var eventElem = document.getElementById("tb_" + obj.event);
+        var url = eventElem.dataset.url;
+        var iname = eventElem.dataset.iname;
+        var zindex = eventElem.dataset.zindex;
         switch(obj.event){
             case 'add':
-                layer.msg('添加');
+                add(obj.event,iname, url, data, zindex);
                 break;
-            case 'update':
+            case 'del':
                 if(data.length === 0){
-                    layer.msg('请选择一行');
-                } else if(data.length > 1){
-                    layer.msg('只能同时编辑一个');
-                } else {
-                    layer.alert('编辑 [id]：'+ checkStatus.data[0].id);
+                    layer.msg('请选择要删除的记录');
+                    return;
                 }
+                layer.confirm('确定删除吗？', function(index){
+                    del(obj.event,iname, url, data, zindex);
+                });
                 break;
-            case 'delete':
-                if(data.length === 0){
-                    layer.msg('请选择一行');
-                } else {
-                    layer.msg('删除');
-                }
+            default:
+                toolbar_event_extend(obj.event,iname, url, data, zindex);
                 break;
-        };
+        }
     });
-}
-
-// 监听行工具栏事件
-function toolbar_table_toolOn(layFilter,layui) {
-    var table = layui.table;
-    var layer = layui.layer;
+    // 监听行工具栏
     table.on('tool(' + layFilter + ')', function(obj){ //注：tool 是工具条事件名，test 是 table 原始容器的属性 lay-filter="对应的值"
         var data = obj.data //获得当前行数据
             ,layEvent = obj.event; //获得 lay-event 对应的值
-        if(layEvent === 'detail'){
-            layer.msg('查看操作');
-        } else if(layEvent === 'del'){
-            layer.confirm('真的删除行么', function(index){
-                obj.del(); //删除对应行（tr）的DOM结构
-                layer.close(index);
-                //向服务端发送删除指令
-            });
-        } else if(layEvent === 'edit'){
-            layer.msg('编辑操作');
+        // 获取工具栏url
+        var eventElem = document.getElementById("rb_" + obj.event);
+        var url = eventElem.dataset.url;
+        var iname = eventElem.dataset.iname;
+        var zindex = eventElem.dataset.zindex;
+        switch (layEvent) {
+            case 'detail':
+                detail(obj.event,iname, url, data, zindex);
+                break;
+            case 'edit':
+                edit(obj.event,iname, url, data, zindex);
+                break;
+            case 'del':
+                layer.confirm('确定删除吗？', function(index){
+                    //向服务端发送删除指令
+                    del(obj.event,iname, url, data, zindex);
+                });
+                break;
+            default:
+                rowbar_event_extend(obj.event,iname, url, data, zindex);
+                break;
         }
     });
-
 }

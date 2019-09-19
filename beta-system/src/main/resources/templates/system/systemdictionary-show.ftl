@@ -29,6 +29,8 @@
             ,height: $('#home1').height()
             ,title: '用户表'
             ,page: true //开启分页
+            ,initSort:'orderNumber'
+            ,loading:true
             ,toolbar: '#tool_bar' //开启工具栏，此处显示默认图标，可以自定义模板，详见文档
             // ,totalRow: true //开启合计行
             ,cols: [[
@@ -45,10 +47,8 @@
                 return toolbar_parseTableData(res);
             }
         });
-        //监听头工具栏事件
+        //监听工具栏事件
         toolbar_table_toolbarOn('list_table', layui);
-        //监听行工具事件
-        toolbar_table_toolOn('list_table', layui);
     });
 </script>
 </html>

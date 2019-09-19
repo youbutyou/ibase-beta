@@ -41,6 +41,12 @@ public class SystemDictionaryController extends BaseController {
         return "system/systemdictionary-show";
     }
 
+    @ApiOperation(value = "详情")
+    @RequestMapping(value = "/add", method = RequestMethod.GET)
+    public String add(Model model) {
+        return "system/systemdictionary-info";
+    }
+
     @ApiOperation(value = "查询列表")
     @RequestMapping(value = "/list", method = RequestMethod.POST)
     @ResponseBody
@@ -50,7 +56,7 @@ public class SystemDictionaryController extends BaseController {
 
     @ApiOperation(value = "查询一条记录")
     @ApiImplicitParams({
-        @ApiImplicitParam(name = "id", value = "id", required = true, dataType = "string", paramType = "query")
+        @ApiImplicitParam(name = "id", value = "id", required = true, dataType = "int", paramType = "query")
     })
     @RequestMapping(value = "/edit", method = RequestMethod.POST)
     @ResponseBody
