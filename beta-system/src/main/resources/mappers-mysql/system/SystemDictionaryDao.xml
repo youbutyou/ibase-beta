@@ -81,7 +81,7 @@
         `iname` = #{iname},
         `psn` = #{psn},
         `order_number` = #{orderNumber},
-        `state` = #{state}
+        `state` = #{state},
         `remark` = #{remark}
         WHERE id = #{id}
     </update>

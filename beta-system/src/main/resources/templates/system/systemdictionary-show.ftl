@@ -8,16 +8,18 @@
 <body>
 <div id="home1" class="layui-layout-body">
     <div style="display: none;">
-        <input id="modulesn" name="modulesn" value="${modulesn}">
+        <input id="modulesn" name="modulesn" th:value="${modulesn}">
     </div>
     <table id="list_data" lay-filter="list_table"></table>
 </div>
 </body>
 <script src="/resources/common/commonJs.js"></script>
 <script type="text/javascript" th:inline="none">
-    layui.use(['layer', 'form','table'], function(){
+    layui.use(['layer','jquery', 'form','table'], function(){
+        // 获取模块编号
+        var modulesn = $("#modulesn").val();
         // 获取工具栏
-        toolbar_table_getToolbar('dictionary',layui);
+        toolbar_table_getToolbar(modulesn,layui);
         // 数据初始化
         var table = layui.table;
         // 加载table

@@ -13,3 +13,6 @@ html,body{
 .layui-tab-item{
     height: 100%;
 }
+.ibase-form{
+    padding: 30px;
+}
