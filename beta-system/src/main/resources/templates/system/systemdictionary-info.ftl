@@ -28,6 +28,13 @@
         </div>
     </div>
     <div class="layui-form-item">
+        <label class="layui-form-label">字典类型</label>
+        <div class="layui-input-block">
+            <select id="dicTypeSn" name="interest" lay-filter="dicTypeSn">
+            </select>
+        </div>
+    </div>
+    <div class="layui-form-item">
         <label class="layui-form-label">数据状态</label>
         <div class="layui-input-block">
             <input type="text" name="state" placeholder="请输入名称" autocomplete="off" class="layui-input">
@@ -57,6 +64,19 @@
 <script type="text/javascript">
     layui.use(['form','jquery'], function(){
         var form = layui.form;
+        component.initSelect('dicTypeSn', {
+            method:'post',
+            url:'/systemdictionarytype/list',
+            param:{state:'state_001'},
+            layer:layui
+        },
+        function success(msg) {
+            layer.msg(msg);
+            form.render('select');
+        },
+        function error(msg) {
+            layer.alert(msg);
+        });
     });
 </script>
 </html>

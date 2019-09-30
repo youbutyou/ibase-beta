@@ -26,11 +26,12 @@
         table.render({
             elem: '#list_data',
             method:'POST',
-            url: '/systemdictionary/list',
+            url: '/systemmodule/list',
             where:{state:"state_001"}
             ,height: $('#home1').height()
             ,title: '用户表'
             ,page: true //开启分页
+            ,limits:[10,20,30,50,100]
             ,initSort:'orderNumber'
             ,loading:true
             ,toolbar: '#tool_bar' //开启工具栏，此处显示默认图标，可以自定义模板，详见文档
@@ -41,12 +42,19 @@
                 ,{field: 'id', title: 'ID',hide:true}
                 ,{field: 'sn', title: '编码'}
                 ,{field: 'iname', title: '名称'}
-                ,{field: 'dicTypeSn', title: '字典类型'}
+                ,{field: 'psn', title: '父节点'}
+                ,{field: 'url', title: '地址'}
+                ,{field: 'icon', title: '图标'}
+                ,{field: 'dicSn', title: '模块类型'}
+                ,{field: 'fileType', title: '文件类型'}
                 ,{field: 'state', title: '数据状态'}
                 ,{fixed: 'right', align:'center', toolbar: '#row_bar'}
             ]],
             parseData: function(res) { //res 即为原始返回的数据
                 return toolbar_parseTableData(res);
+            },
+            done: function(res, curr, count){
+                // 数据渲染结束
             }
         });
         //监听工具栏事件
