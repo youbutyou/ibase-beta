@@ -47,6 +47,12 @@ public class SystemModuleController extends BaseController {
         return "system/systemmodule-show";
     }
 
+    @ApiOperation(value = "详情")
+    @RequestMapping(value = "/add", method = RequestMethod.GET)
+    public String add(Model model, String param) {
+        return "system/systemmodule-info";
+    }
+
     @ApiOperation(value = "查询列表")
     @RequestMapping(value = "/list", method = RequestMethod.POST)
     @ResponseBody
@@ -97,7 +103,7 @@ public class SystemModuleController extends BaseController {
         List<SystemModuleDto> list = systemModuleService.loadList(systemModuleDto);
         List<NavData> nav = new ArrayList<>(list.size());
         list.forEach(item->{
-            if(StringUtils.isBlank(item.getpsn())){
+            if("ibase".equals(item.getpsn())){
                 nav.add(InfoUtil.moduleToNav(item));
             }
         });

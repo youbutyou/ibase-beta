@@ -146,11 +146,13 @@ function toolbar_beforeDel(iname, url, ids, object) {
     return true;
 }
 // 加载前
-function toolbar_beforeLoad(win) {
+function toolbar_beforeLoad(data) {
+    console.log('toolbar_beforeLoad');
     return true;
 }
 // 提交前
-function toolbar_beforeSubmit(object,win) {
+function toolbar_beforeSubmit(object) {
+    console.log("toolbar_beforeSubmit");
     return true;
 }
 
@@ -162,21 +164,22 @@ function toolbar_delSuccess(ids, data) {
     }
     layer.alert(data.message);
 }
-// 打开后
-function toolbar_openSuccess(object, win) {
-
-}
 // 加载后
-function toolbar_loadSuccess(object, win) {
+function toolbar_loadSuccess(object) {
+    console.log("toolbar_loadSuccess");
 }
 // 保存后
 function toolbar_saveSuccess(res) {
+    console.log("toolbar_saveSuccess");
     if(res && res.success){
-        parent.layer.msg(res.message);
-        parent.layui.table.reload('list_data');
+        // 关闭当前页面
+        var index = parent.layer.getFrameIndex(window.name);
+        parent.layer.close(index);
+        // 刷新父页面table数据
+        parent.tableRender();
         return;
     }
-    parent.lay.alert(res.message);
+    parent.layer.alert(res.message);
 }
 
 // 设置弹出层按钮，可设置无限个按钮,当前最多5个，配合按钮回调
@@ -190,21 +193,6 @@ function toolbar_footButton1_callback(index, layero) {
 }
 // 弹出层按钮2
 function toolbar_footButton2_callback(index, layero) {
-    // 禁用点击该按钮关闭页面
-    return false;
-}
-// 弹出层按钮3
-function toolbar_footButton3_callback(index, layero) {
-    // 禁用点击该按钮关闭页面
-    return false;
-}
-// 弹出层按钮4
-function toolbar_footButton4_callback(index, layero) {
-    // 禁用点击该按钮关闭页面
-    return false;
-}
-// 弹出层按钮5
-function toolbar_footButton5_callback(index, layero) {
     // 禁用点击该按钮关闭页面
     return false;
 }
@@ -222,7 +210,7 @@ function toolbar_event_impl(event, iname, url, object, zindex, w, h) {
     }
     // 配置窗口大小
     w = (w && w !== '') ? w + 'px' : '800px';
-    h = (h && h !== '') ? h + 'px' : '600px';
+    h = (h && h !== '') ? h + 'px' : '750px';
     // 配置按钮
     var btn = toolbar_setFootButton();
     // 页面url
@@ -235,37 +223,23 @@ function toolbar_event_impl(event, iname, url, object, zindex, w, h) {
         anim: 1,
         resize:true,
         maxmin: true,
-        title:iname,
         area: [w, h],
+        title:iname,
         content: infoUrl,
         btn:btn,
         success: function(layero, index){
             // 层级置顶
             layer.setTop(layero); //重点2
             // 获取弹出窗口
-            var iframeWin = window[layero.find('iframe')[0]['name']];
-            toolbar_openSuccess(object, iframeWin);
-            if(toolbar_beforeLoad(iframeWin)){
-                // 给表单赋值
-                if(event === 'edit' || event === 'detail'){
-                    // 获取表单数据
-                    $.ajax({
-                        method: "POST",
-                        url: url,
-                        data: {"id": object.id},
-                        async: true,
-                        dataType: "JSON",
-                        success: function (formData) {
-                            iframeWin.toolbar_fill_formData(formData.data, iframeWin, saveUrl, layerIndex);
-                            toolbar_loadSuccess(formData.data, iframeWin);
-                        },
-                        error: function (XMLHttpRequest, textStatus) {
-                            layer.alert("请求异常，错误码：" + textStatus);
-                        }
-                    });
-                }
-            }
-
+             var iframeWin = window[layero.find('iframe')[0]['name']];
+             // 传参子页面
+             iframeWin.formParam = {
+                 readonly:'detail' === event ? true : false,        // 是否只读
+                 postData:'add' === event ? false : true,           // 是否获取表单数据
+                 url:url,                                           // 获取表单数据URL
+                 saveUrl:saveUrl,                                   // 表单提交保存URL
+                 data:object                                       // 当前对象
+             };
         },
         yes:function (index,layero) {
             toolbar_footButton1_callback(index, layero);
@@ -273,52 +247,9 @@ function toolbar_event_impl(event, iname, url, object, zindex, w, h) {
         btn2: function(index, layero){
             toolbar_footButton2_callback(index, layero);
         },
-        btn3: function(index, layero){
-            toolbar_footButton3_callback(index, layero);
-        },
-        btn4: function(index, layero){
-            toolbar_footButton4_callback(index, layero);
-        },
-        btn5: function(index, layero){
-            toolbar_footButton5_callback(index, layero);
-        },
         cancel:function (index,layero) {
             // 右上角关闭回调
         }
-    });
-}
-// 填充表单数据
-function toolbar_fill_formData(data, win, saveUrl, layerIndex) {
-    layui.use(['form'], function(){
-        // 填充表单数据
-        var param = {};
-        for(var key in data){
-            param[key] = data[key];
-        }
-        var form = layui.form;
-        form.val("form",param);
-
-        // 监听事件
-        form.on('submit(form)', function(data){
-            var object = form.val('form');
-            if(toolbar_beforeSubmit(object,win)){
-                // 提交表单数据
-                $.ajax({
-                    method: "POST",
-                    url: saveUrl,
-                    data: object,
-                    async: true,
-                    dataType: "JSON",
-                    success: function (res) {
-                        toolbar_saveSuccess(res);
-                        parent.layer.close(layerIndex);
-                    },
-                    error: function (XMLHttpRequest, textStatus) {
-                        layer.alert("请求异常，错误码：" + textStatus);
-                    }
-                });
-            }
-        });
     });
 }
 
@@ -388,4 +319,100 @@ function toolbar_event_extend(event, iname, url, data, zindex) {
 // 扩展行工具栏
 function rowbar_event_extend(event, iname, url, data, zindex) {
     layer.msg("点击" + iname);
+}
+
+// 填充表单数据
+function toolbar_form_fillData(id, data) {
+    var formObj = $("#" + id);
+    if (typeof data !== "object") {
+        throw "data no object";
+    }
+    for (var key in data) {
+        if (data.hasOwnProperty(key)) {
+            var inputs = formObj.find('input[name = "' + key + '"]');
+            if (inputs.length > 0) {
+                var input = inputs[0];
+                switch (input.type) {
+                    case "text":
+                        input.value = data[key];
+                        break;
+                    case "hidden":
+                        input.value = data[key];
+                        break;
+                    case "radio":
+                        formObj.find('input[type="radio"][name="' + key + '"][value="' + val + '"]').prop("checked", true);
+                        break;
+                    case "checkbox":
+                        if (data[key] === 'state_001') {
+                            formObj.find('input[type="checkbox"][name="' + key + '"]').prop("checked", true);
+                        }else{
+                            formObj.find('input[type="checkbox"][name="' + key + '"]').prop("checked", false);
+                        }
+                        break;
+                }
+            } else {
+                var select = formObj.find('select[name="' + key + '"]');
+                if (select.length > 0) {
+                    formObj.find('select[name="' + key + '"]').val(data[key]);
+                    formObj.find("dd[lay-value='" + data[key] + "']").trigger("click");
+                }
+            }
+        }
+    }
+}
+// 表单取消按钮 - 关闭当前页面
+function toolbar_form_cancel() {
+    var index = parent.layer.getFrameIndex(window.name);
+    parent.layer.close(index);
+}
+// 表单打开后
+function toolbar_form_openSuccess(form, formParam) {
+    // switch 关闭时也向后台传值
+    form.on('switch(state)', function(data) {
+        $(data.elem).attr('type', 'hidden').val(this.checked ? 'state_001' : 'state_002');
+    });
+    // 监听提交按钮点击事件
+    form.on('submit(submit)', function(data){
+        var object = form.val('form');
+        // 解决switch未选中状态下不能获取值
+        object['state'] = $('#state').prop("checked") ? 'state_001' : 'state_002';
+        if(toolbar_beforeSubmit(object)){
+            // 提交表单数据
+            $.ajax({
+                method: "POST",
+                url: formParam.saveUrl,
+                data: object,
+                async: true,
+                dataType: "JSON",
+                success: function (res) {
+                    toolbar_saveSuccess(res);
+                },
+                error: function (XMLHttpRequest, textStatus) {
+                    layer.alert("请求异常，错误码：" + textStatus);
+                }
+            });
+        }
+    });
+    // 编辑/详情 表单数据初始化
+    if(formParam.postData){
+        // 获取表单数据
+        component.postData(
+            formParam.url,
+            {id:formParam.data.id},
+            function success(res) {
+                if(toolbar_beforeLoad(res)){
+                    // 填充表单数据
+                    toolbar_form_fillData('form', res);
+                    // 设置只读，隐藏提交按钮
+                    if(formParam.readonly){
+                        $('#form').find('input,textarea').attr('readonly',true);
+                        $('#form').find('select').attr('disabled',true);
+                        $('#state').prop('disabled', true);
+                        $('.ibase-button').remove();
+                    }
+                    form.render();
+                    toolbar_loadSuccess(res);
+                }
+            });
+    }
 }

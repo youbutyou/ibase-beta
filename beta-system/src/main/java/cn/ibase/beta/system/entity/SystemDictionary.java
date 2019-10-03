@@ -18,7 +18,15 @@ public class SystemDictionary extends BaseEntity {
      */
     private String iname;
 
+    /**
+     * 父节点
+     */
     private String psn;
+
+    /**
+     * 默认选中
+     */
+    private boolean checked;
 
     /**
      * 排序号
@@ -76,18 +84,20 @@ public class SystemDictionary extends BaseEntity {
         this.iname = iname;
     }
 
-    /**
-     * @return psn
-     */
-    public String getpsn() {
+    public String getPsn() {
         return psn;
     }
 
-    /**
-     * @param psn
-     */
-    public void setpsn(String psn) {
+    public void setPsn(String psn) {
         this.psn = psn;
+    }
+
+    public boolean isChecked() {
+        return checked;
+    }
+
+    public void setChecked(boolean checked) {
+        this.checked = checked;
     }
 
     /**

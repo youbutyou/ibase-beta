@@ -5,7 +5,7 @@
     <sql id="commonSelectColumnSql">
         SELECT
         a.id, a.sn,a.iname,a.psn,a.order_number AS orderNumber,a.state,
-        a.remark,a.dic_type_sn AS dicTypeSn
+        a.remark,a.dic_type_sn AS dicTypeSn,checked
     </sql>
 
     <sql id="commonJoinSql">
@@ -31,6 +31,9 @@
         </if>
         <if test="state != null and state != ''">
             AND a.state = #{state}
+        </if>
+        <if test="checked != null and checked != ''">
+            AND a.checked = #{checked}
         </if>
     </sql>
 
@@ -68,10 +71,10 @@
 
     <insert id="insert" parameterType="cn.ibase.beta.system.dto.SystemDictionaryDto" useGeneratedKeys="true" keyProperty="id">
         INSERT INTO system_dictionary(
-        `sn`,`iname`,`psn`,`order_number`,`state``remark`
+        `sn`,`iname`,`psn`,`order_number`,`state`,`remark`,`checked`
         )
         VALUES(
-        #{sn},#{iname},#{psn},#{orderNumber},#{state}#{remark}
+        #{sn},#{iname},#{psn},#{orderNumber},#{state},#{remark},#{checked}
         )
     </insert>
 
@@ -82,6 +85,7 @@
         `psn` = #{psn},
         `order_number` = #{orderNumber},
         `state` = #{state},
+        `checked` = #{checked},
         `remark` = #{remark}
         WHERE id = #{id}
     </update>

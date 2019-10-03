@@ -12,38 +12,25 @@
     <div class="layui-form-item">
         <label class="layui-form-label">编码</label>
         <div class="layui-input-block">
-            <input type="text" name="sn" lay-verify="title" autocomplete="off" placeholder="请输入编码" class="layui-input">
+            <input type="text" name="sn" lay-verify="required" autocomplete="off" placeholder="请输入编码" class="layui-input">
         </div>
     </div>
     <div class="layui-form-item">
         <label class="layui-form-label">名称</label>
         <div class="layui-input-block">
-            <input type="text" name="iname" placeholder="请输入名称" autocomplete="off" class="layui-input">
+            <input type="text" name="iname" lay-verify="required" placeholder="请输入名称" autocomplete="off" class="layui-input">
         </div>
     </div>
     <div class="layui-form-item">
         <label class="layui-form-label">字典类型</label>
         <div class="layui-input-block">
-            <input type="text" name="dicTypeSn" placeholder="请输入名称" autocomplete="off" class="layui-input">
-        </div>
-    </div>
-    <div class="layui-form-item">
-        <label class="layui-form-label">字典类型</label>
-        <div class="layui-input-block">
-            <select id="dicTypeSn" name="interest" lay-filter="dicTypeSn">
-            </select>
+            <select id="dicTypeSn" name="interest" lay-verify="required" lay-filter="dicTypeSn"></select>
         </div>
     </div>
     <div class="layui-form-item">
         <label class="layui-form-label">数据状态</label>
         <div class="layui-input-block">
-            <input type="text" name="state" placeholder="请输入名称" autocomplete="off" class="layui-input">
-        </div>
-    </div>
-    <div class="layui-form-item">
-        <label class="layui-form-label">开关</label>
-        <div class="layui-input-block">
-            <input type="checkbox" name="switch" lay-skin="switch">
+            <input id="state" type="checkbox" name="state" lay-skin="switch" lay-text="启用|停用">
         </div>
     </div>
     <div class="layui-form-item layui-form-text">
@@ -64,19 +51,28 @@
 <script type="text/javascript">
     layui.use(['form','jquery'], function(){
         var form = layui.form;
+        // 初始化字典类型
         component.initSelect('dicTypeSn', {
             method:'post',
             url:'/systemdictionarytype/list',
-            param:{state:'state_001'},
-            layer:layui
+            param:{
+                state:'state_001'
+            }
         },
-        function success(msg) {
-            layer.msg(msg);
+        function success() {
             form.render('select');
         },
         function error(msg) {
             layer.alert(msg);
         });
+        // 初始化数据状态
+        component.initStateSwitch('state',
+            function success() {
+                form.render('checkbox');
+            },
+            function error(msg) {
+                layer.alert(msg);
+            });
     });
 </script>
 </html>

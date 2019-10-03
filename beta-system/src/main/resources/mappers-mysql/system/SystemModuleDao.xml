@@ -94,7 +94,7 @@
         `dic_sn` = #{dicSn},
         `order_number` = #{orderNumber},
         `file_type` = #{fileType},
-        `state` = #{state}
+        `state` = #{state},
         `remark` = #{remark}
         WHERE id = #{id}
     </update>

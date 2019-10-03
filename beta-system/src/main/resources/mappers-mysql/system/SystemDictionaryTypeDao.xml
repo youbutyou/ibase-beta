@@ -73,7 +73,7 @@
         `sn` = #{sn},
         `iname` = #{iname},
         `psn` = #{psn},
-        `state` = #{state}
+        `state` = #{state},
         `remark` = #{remark}
         WHERE id = #{id}
     </update>
