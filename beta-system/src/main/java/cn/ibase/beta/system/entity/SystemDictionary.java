@@ -46,7 +46,7 @@ public class SystemDictionary extends BaseEntity {
     /**
      * 类型编码
      */
-    private String dicTypeSn;
+    private String fileType;
 
     /**
      * 获取编号
@@ -154,21 +154,11 @@ public class SystemDictionary extends BaseEntity {
         this.remark = remark;
     }
 
-    /**
-     * 获取类型编码
-     *
-     * @return dic_type_sn - 类型编码
-     */
-    public String getDicTypeSn() {
-        return dicTypeSn;
+    public String getFileType() {
+        return fileType;
     }
 
-    /**
-     * 设置类型编码
-     *
-     * @param dicTypeSn 类型编码
-     */
-    public void setDicTypeSn(String dicTypeSn) {
-        this.dicTypeSn = dicTypeSn;
+    public void setFileType(String fileType) {
+        this.fileType = fileType;
     }
 }

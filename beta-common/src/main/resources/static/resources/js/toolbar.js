@@ -156,10 +156,16 @@ function toolbar_beforeSubmit(object) {
     return true;
 }
 
+// 页面打开后
+function toolbar_openSuccess(object) {
+    console.log('toolbar_openSuccess');
+}
 // 删除后
 function toolbar_delSuccess(ids, data) {
+    console.log("toolbar_delSuccess");
     if(data && data.success){
         layer.msg(data.message);
+        tableRender();
         return;
     }
     layer.alert(data.message);
@@ -232,6 +238,7 @@ function toolbar_event_impl(event, iname, url, object, zindex, w, h) {
             layer.setTop(layero); //重点2
             // 获取弹出窗口
              var iframeWin = window[layero.find('iframe')[0]['name']];
+            iframeWin.toolbar_openSuccess(object);
              // 传参子页面
              iframeWin.formParam = {
                  readonly:'detail' === event ? true : false,        // 是否只读
@@ -257,6 +264,24 @@ function toolbar_event_impl(event, iname, url, object, zindex, w, h) {
 function toolbar_table_toolbarOn(layFilter,layui) {
     var table = layui.table;
     var layer = layui.layer;
+    // 行单击事件 - 选中/取消改行
+    $(document).on("click",".layui-table-body table.layui-table tbody tr", function () {
+        var index = $(this).attr('data-index');
+        var tableBox = $(this).parents('.layui-table-box');
+        //存在固定列
+        if (tableBox.find(".layui-table-fixed.layui-table-fixed-l").length>0) {
+            tableDiv = tableBox.find(".layui-table-fixed.layui-table-fixed-l");
+        } else {
+            tableDiv = tableBox.find(".layui-table-body.layui-table-main");
+        }
+        var checkCell = tableDiv.find("tr[data-index=" + index + "]").find("td div.laytable-cell-checkbox div.layui-form-checkbox I");
+        if (checkCell.length>0) {
+            checkCell.click();
+        }
+    });
+    $(document).on("click", "td div.laytable-cell-checkbox div.layui-form-checkbox", function (e) {
+        e.stopPropagation();
+    });
     // 监听头工具栏
     table.on('toolbar(' + layFilter + ')', function(obj){
         var checkStatus = table.checkStatus(obj.config.id)

@@ -51,7 +51,7 @@ public class LoginServiceImpl implements LoginService {
     @Override
     public SystemModuleDto getSystemInfo(){
         SystemModuleDto moduleDto = new SystemModuleDto();
-        moduleDto.setDicSn("system_config_001");
+        moduleDto.setDicSn("system_001");
         return systemModuleService.load(moduleDto);
     }
 

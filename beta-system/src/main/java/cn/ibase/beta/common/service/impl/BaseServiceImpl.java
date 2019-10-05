@@ -224,7 +224,7 @@ public class BaseServiceImpl<T extends BaseEntity> implements BaseService<T> {
                 order = "";
             }
 
-            int limit = baseEntity.getRows() != null ? baseEntity.getRows() : 20;
+            int limit = baseEntity.getLimit() != null ? baseEntity.getLimit() : 20;
             int page = baseEntity.getPage() != null ? baseEntity.getPage() : 1;
             int offset = (page - 1) * limit;
             baseEntity.setOffset(offset);

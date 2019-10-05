@@ -74,7 +74,7 @@
 		navbar.set({
 			elem: "#nav-003",　　//存在组件的容器
 			type: 'POST', 		//读取方式
-			url: "/systemmodule/listwithchildren?dicSn=navigation_002&state=state_001",
+			url: "/systemmodule/listwithchildren?dicSn=module_002&state=state_001",
 			spreadOne: false,　　//设置是否只展开一个二级菜单
 			cached: false　　	//是否启用缓存，如果设置为true，则将初始化数据的数据添加至缓存
 		});
@@ -126,7 +126,7 @@
 		$.ajax({
 			method: "POST",
 			url: "/systemmodule/listwithchildren",
-			data:{dicSn:"navigation_001",state:"state_001"},
+			data:{dicSn:"module_001",state:"state_001"},
 			dataType: "JSON",
 			success: function (data, textStatus) {
 				var html = "";

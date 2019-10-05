@@ -40,7 +40,7 @@ public class BaseEntity{
     /**
      * 数据库 偏移量
      */
-    protected Integer limit;
+    protected Integer limit = 20;
 
     /**
      * 数据版本

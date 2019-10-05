@@ -61,10 +61,10 @@
 
     <insert id="insert" parameterType="cn.ibase.beta.system.dto.SystemDictionaryTypeDto" useGeneratedKeys="true" keyProperty="id">
         INSERT INTO system_dictionary_type(
-        `sn`,`iname`,`psn`,`state``remark`
+        `sn`,`iname`,`psn`,`state`,`remark`
         )
         VALUES(
-        #{sn},#{iname},#{psn},#{state}#{remark}
+        #{sn},#{iname},#{psn},#{state},#{remark}
         )
     </insert>
 

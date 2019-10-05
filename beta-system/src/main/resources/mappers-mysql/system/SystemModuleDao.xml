@@ -5,11 +5,15 @@
     <sql id="commonSelectColumnSql">
         SELECT
         a.id, a.sn,a.iname,a.psn,a.url,a.icon,a.file_type AS fileType,
-        a.dic_sn AS dicSn,a.order_number AS orderNumber,a.state,a.remark
+        a.dic_sn AS dicSn,a.order_number AS orderNumber,a.state,a.remark,
+        b.iname AS dicSnName,
+        c.iname AS fileTypeName
     </sql>
 
     <sql id="commonJoinSql">
         FROM system_module a
+        LEFT JOIN system_dictionary b ON b.sn = a.dic_sn
+        LEFT JOIN system_dictionary c ON c.sn = a.file_type
         WHERE 1 = 1
     </sql>
 
@@ -77,10 +81,10 @@
 
     <insert id="insert" parameterType="cn.ibase.beta.system.dto.SystemModuleDto" useGeneratedKeys="true" keyProperty="id">
         INSERT INTO system_module(
-        `sn`,`iname`,`psn`,`url`,`icon`,`dic_sn`,`order_number`,`file_type`,`state``remark`
+        `sn`,`iname`,`psn`,`url`,`icon`,`dic_sn`,`order_number`,`file_type`,`state`,`remark`
         )
         VALUES(
-        #{sn},#{iname},#{psn},#{url},#{icon},#{dicSn},#{orderNumber},#{fileType},#{state}#{remark}
+        #{sn},#{iname},#{psn},#{url},#{icon},#{dicSn},#{orderNumber},#{fileType},#{state},#{remark}
         )
     </insert>
 

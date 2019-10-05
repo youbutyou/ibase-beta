@@ -49,9 +49,9 @@
                     ,{field: 'id', title: 'ID',hide:true}
                     ,{field: 'sn', title: '编码',hide:true}
                     ,{field: 'iname', title: '名称'}
-                    ,{field: 'dicSn', title: '模块类型'}
-                    ,{field: 'fileType', title: '文件类型'}
-                    ,{field: 'state', title: '数据状态'}
+                    ,{field: 'dicSnName', title: '模块类型'}
+                    ,{field: 'fileType', title: '文件类型',templet:'#fileTypeTpl'}
+                    ,{field: 'state', title: '数据状态',templet:'#stateTpl'}
                     ,{fixed: 'right',title: '操作', align:'center', toolbar: '#row_bar'}
                 ]],
                 parseData: function(res) { //res 即为原始返回的数据

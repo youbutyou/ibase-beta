@@ -69,7 +69,6 @@ var component = {
                 if(res && res.success){
                     if(res.rows.length > 0){
                         var select = document.getElementById(id);
-                        select.options.add(new Option('', ''));
                         $.each(res.rows, function (i, data) {
                             select.options.add(new Option(data.iname, data.sn, data.checked));
                         });

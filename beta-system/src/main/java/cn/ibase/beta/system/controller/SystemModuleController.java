@@ -103,7 +103,7 @@ public class SystemModuleController extends BaseController {
         List<SystemModuleDto> list = systemModuleService.loadList(systemModuleDto);
         List<NavData> nav = new ArrayList<>(list.size());
         list.forEach(item->{
-            if("ibase".equals(item.getpsn())){
+            if("system".equals(item.getpsn())){
                 nav.add(InfoUtil.moduleToNav(item));
             }
         });

@@ -24,11 +24,11 @@ var constant = {
     // 目录
     file002:'file_002',
     // 系统信息配置
-    systemConfig001:'system_config_001',
+    systemConfig001:'system_001',
     // 横向导航
-    navigation001:'navigation_001',
+    navigation001:'module_001',
     // 侧边导航
-    navigation002:'navigation_002',
+    navigation002:'module_002',
     // 头工具栏
     toolbar001:'toolbar_001',
     // 行工具栏

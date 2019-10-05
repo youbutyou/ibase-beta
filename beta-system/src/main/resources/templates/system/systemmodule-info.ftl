@@ -89,7 +89,7 @@
                 method:'post',
                 url:'/systemmodule/list',
                 param:{
-                    dicSns:'navigation_001,navigation_002',
+                    dicSns:'module_001,module_002,system_001',
                     state:'state_001'
                 }
             },
@@ -104,7 +104,7 @@
                 method:'post',
                 url:'/systemdictionary/list',
                 param:{
-                    dicTypeSn:'001_system_module',
+                    psn:'001_system_module',
                     state:'state_001'
                 }
             },
@@ -119,7 +119,7 @@
                 method:'post',
                 url:'/systemdictionary/list',
                 param:{
-                    dicTypeSn:'002_public_file',
+                    psn:'002_public_file',
                     state:'state_001'
                 }
             },
@@ -140,5 +140,29 @@
                 layer.alert(msg);
             });
     });
+
+    function toolbar_openSuccess(object) {
+        if(object && object.length > 0){
+            // 设置选中行为父节点
+            console.log(object[0].sn);
+            setTimeout(function () {
+                layui.use(['form','jquery'], function(){
+                    $('#psn').val(object[0].sn);
+                    layui.form.render('select');
+                });
+            },500);
+        }
+    }
+
+    function toolbar_loadSuccess(object) {
+        if(object && object.psn === 'zero'){
+            var select = document.getElementById('psn');
+            select.options.add(new Option('zero', 'zero',true, true));
+            $('#psn').attr('disabled',true);
+            layui.use(['form','jquery'], function(){
+               layui.form.render();
+            });
+        }
+    }
 </script>
 </html>

@@ -10,12 +10,21 @@ import java.util.List;
  */
 public class SystemModuleDto extends SystemModule{
 
+    private String dicSnName;
     /**
      * 字典类型
      */
     private List<String> dicSns;
 
     private List<SystemModuleDto> children;
+
+    public String getDicSnName() {
+        return dicSnName;
+    }
+
+    public void setDicSnName(String dicSnName) {
+        this.dicSnName = dicSnName;
+    }
 
     public List<String> getDicSns() {
         return dicSns;

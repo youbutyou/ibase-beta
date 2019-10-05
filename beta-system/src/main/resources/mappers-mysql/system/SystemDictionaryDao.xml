@@ -5,7 +5,7 @@
     <sql id="commonSelectColumnSql">
         SELECT
         a.id, a.sn,a.iname,a.psn,a.order_number AS orderNumber,a.state,
-        a.remark,a.dic_type_sn AS dicTypeSn,checked
+        a.remark,a.file_type AS fileType,checked
     </sql>
 
     <sql id="commonJoinSql">
@@ -23,8 +23,8 @@
         <if test="psn != null and psn != ''">
             AND a.psn = #{psn}
         </if>
-        <if test="dicTypeSn != null and dicTypeSn != ''">
-            AND a.dic_type_sn = #{dicTypeSn}
+        <if test="fileType != null and fileType != ''">
+            AND a.file_type = #{fileType}
         </if>
         <if test="orderNumber != null and orderNumber != ''">
             AND a.order_number = #{orderNumber}
@@ -71,10 +71,10 @@
 
     <insert id="insert" parameterType="cn.ibase.beta.system.dto.SystemDictionaryDto" useGeneratedKeys="true" keyProperty="id">
         INSERT INTO system_dictionary(
-        `sn`,`iname`,`psn`,`order_number`,`state`,`remark`,`checked`
+        `sn`,`iname`,`psn`,`order_number`,`state`,`remark`,`checked`,`file_type`
         )
         VALUES(
-        #{sn},#{iname},#{psn},#{orderNumber},#{state},#{remark},#{checked}
+        #{sn},#{iname},#{psn},#{orderNumber},#{state},#{remark},#{checked},#{fileType}
         )
     </insert>
 
@@ -86,6 +86,7 @@
         `order_number` = #{orderNumber},
         `state` = #{state},
         `checked` = #{checked},
+        `file_type` = #{fileType},
         `remark` = #{remark}
         WHERE id = #{id}
     </update>

@@ -62,10 +62,10 @@
 
     <insert id="insert" parameterType="cn.ibase.beta.system.dto.SystemUserDto" useGeneratedKeys="true" keyProperty="id">
         INSERT INTO system_user(
-        `sn`,`iname`,`password`,`phone`,`org_sn`,`state`,`edit_time``edit_user`
+        `sn`,`iname`,`password`,`phone`,`org_sn`,`state`,`edit_time`,`edit_user`
         )
         VALUES(
-        #{sn},#{iname},#{password},#{phone},#{orgSn},#{state},#{editTime}#{editUser}
+        #{sn},#{iname},#{password},#{phone},#{orgSn},#{state},#{editTime},#{editUser}
         )
     </insert>
 
@@ -77,7 +77,7 @@
         `phone` = #{phone},
         `org_sn` = #{orgSn},
         `state` = #{state},
-        `edit_time` = #{editTime}
+        `edit_time` = #{editTime},
         `edit_user` = #{editUser}
         WHERE id = #{id}
     </update>

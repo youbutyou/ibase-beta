@@ -57,9 +57,9 @@ INSERT INTO `system_dictionary` VALUES ('1', 'state_001', '启用', null, 0x3030
 INSERT INTO `system_dictionary` VALUES ('2', 'state_002', '停用', null, 0x3030315F7075626C69635F7374617465, null, 'state_001', null);
 INSERT INTO `system_dictionary` VALUES ('3', 'file_001', '文件', null, 0x3030325F7075626C69635F66696C65, null, 'state_001', null);
 INSERT INTO `system_dictionary` VALUES ('4', 'file_002', '目录', null, 0x3030325F7075626C69635F66696C65, null, 'state_001', null);
-INSERT INTO `system_dictionary` VALUES ('7', 'system_config_001', '系统信息配置', null, 0x3030315F73797374656D5F6D6F64756C65, '1', 'state_001', '系统名称等');
-INSERT INTO `system_dictionary` VALUES ('8', 'navigation_001', '横向导航', null, 0x3030315F73797374656D5F6D6F64756C65, null, 'state_001', null);
-INSERT INTO `system_dictionary` VALUES ('9', 'navigation_002', '侧边导航', null, 0x3030315F73797374656D5F6D6F64756C65, null, 'state_001', null);
+INSERT INTO `system_dictionary` VALUES ('7', 'system_001', '系统信息配置', null, 0x3030315F73797374656D5F6D6F64756C65, '1', 'state_001', '系统名称等');
+INSERT INTO `system_dictionary` VALUES ('8', 'module_001', '横向导航', null, 0x3030315F73797374656D5F6D6F64756C65, null, 'state_001', null);
+INSERT INTO `system_dictionary` VALUES ('9', 'module_002', '侧边导航', null, 0x3030315F73797374656D5F6D6F64756C65, null, 'state_001', null);
 INSERT INTO `system_dictionary` VALUES ('10', 'toolbar_001', '头工具栏', null, 0x3030315F73797374656D5F6D6F64756C65, null, 'state_001', null);
 INSERT INTO `system_dictionary` VALUES ('11', 'toolbar_002', '行工具栏', null, 0x3030315F73797374656D5F6D6F64756C65, null, 'state_001', null);
 INSERT INTO `system_dictionary` VALUES ('12', 'toolbar_003', '扩展头工具栏', null, 0x3030315F73797374656D5F6D6F64756C65, null, 'state_001', null);
@@ -110,19 +110,19 @@ CREATE TABLE `system_module` (
 -- ----------------------------
 -- Records of system_module
 -- ----------------------------
-INSERT INTO `system_module` VALUES ('1', 'system_info', '赚钱杨胖胖', null, null, null, 'system_config_001', null, null, 'state_001', null);
-INSERT INTO `system_module` VALUES ('2', 'nav_001', '横向导航1', null, null, null, 'navigation_001', null, null, 'state_001', null);
-INSERT INTO `system_module` VALUES ('3', 'nav_002', '横向导航2', null, null, null, 'navigation_001', null, null, 'state_001', null);
-INSERT INTO `system_module` VALUES ('4', 'nav_003', '横向导航3', null, null, null, 'navigation_001', null, null, 'state_001', null);
-INSERT INTO `system_module` VALUES ('5', 'nav_side_system', '系统管理', null, null, null, 'navigation_002', null, 'file_002', 'state_001', null);
-INSERT INTO `system_module` VALUES ('6', 'nav_side_002', '侧边导航2', null, null, null, 'navigation_002', null, 'file_002', 'state_001', null);
-INSERT INTO `system_module` VALUES ('7', 'nav_side_003', '侧边导航3', null, null, null, 'navigation_002', null, 'file_001', 'state_001', null);
-INSERT INTO `system_module` VALUES ('8', 'dictionary', '数据字典', 'nav_side_system', '/systemdictionary/show', null, 'navigation_002', null, null, 'state_001', null);
-INSERT INTO `system_module` VALUES ('9', 'module', '应用模块', 'nav_side_system', '/systemmodule/show', null, 'navigation_002', null, null, 'state_001', null);
-INSERT INTO `system_module` VALUES ('10', 'side_001_003', '侧边导航1-003', 'nav_side_system', '/main', null, 'navigation_002', null, null, 'state_001', null);
-INSERT INTO `system_module` VALUES ('11', 'side_002_001', '侧边导航2-001', 'nav_side_002', '/main', null, 'navigation_002', null, null, 'state_001', null);
-INSERT INTO `system_module` VALUES ('12', 'side-002-002', '侧边导航2-002', 'nav_side_002', '/main', null, 'navigation_002', null, null, 'state_001', null);
-INSERT INTO `system_module` VALUES ('13', 'nav_003_001', '横向导航3-001', 'nav_003', '/main', null, 'navigation_001', null, null, 'state_001', null);
+INSERT INTO `system_module` VALUES ('1', 'system_info', '赚钱杨胖胖', null, null, null, 'system_001', null, null, 'state_001', null);
+INSERT INTO `system_module` VALUES ('2', 'nav_001', '横向导航1', null, null, null, 'module_001', null, null, 'state_001', null);
+INSERT INTO `system_module` VALUES ('3', 'nav_002', '横向导航2', null, null, null, 'module_001', null, null, 'state_001', null);
+INSERT INTO `system_module` VALUES ('4', 'nav_003', '横向导航3', null, null, null, 'module_001', null, null, 'state_001', null);
+INSERT INTO `system_module` VALUES ('5', 'nav_side_system', '系统管理', null, null, null, 'module_002', null, 'file_002', 'state_001', null);
+INSERT INTO `system_module` VALUES ('6', 'nav_side_002', '侧边导航2', null, null, null, 'module_002', null, 'file_002', 'state_001', null);
+INSERT INTO `system_module` VALUES ('7', 'nav_side_003', '侧边导航3', null, null, null, 'module_002', null, 'file_001', 'state_001', null);
+INSERT INTO `system_module` VALUES ('8', 'dictionary', '数据字典', 'nav_side_system', '/systemdictionary/show', null, 'module_002', null, null, 'state_001', null);
+INSERT INTO `system_module` VALUES ('9', 'module', '应用模块', 'nav_side_system', '/systemmodule/show', null, 'module_002', null, null, 'state_001', null);
+INSERT INTO `system_module` VALUES ('10', 'side_001_003', '侧边导航1-003', 'nav_side_system', '/main', null, 'module_002', null, null, 'state_001', null);
+INSERT INTO `system_module` VALUES ('11', 'side_002_001', '侧边导航2-001', 'nav_side_002', '/main', null, 'module_002', null, null, 'state_001', null);
+INSERT INTO `system_module` VALUES ('12', 'side-002-002', '侧边导航2-002', 'nav_side_002', '/main', null, 'module_002', null, null, 'state_001', null);
+INSERT INTO `system_module` VALUES ('13', 'nav_003_001', '横向导航3-001', 'nav_003', '/main', null, 'module_001', null, null, 'state_001', null);
 INSERT INTO `system_module` VALUES ('14', 'add', '新增', 'dictionary', '/systemdictionary/add', null, 'toolbar_001', null, null, 'state_001', null);
 INSERT INTO `system_module` VALUES ('15', 'del', '删除', 'dictionary', '/systemdictionary/del', null, 'toolbar_001', null, null, 'state_001', null);
 INSERT INTO `system_module` VALUES ('16', 'detail', '查看', 'dictionary', '/systemdictionary/edit', null, 'toolbar_002', null, null, 'state_001', null);
