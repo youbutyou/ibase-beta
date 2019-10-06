@@ -3,7 +3,8 @@
  * 工具栏
  */
 
-// table 数据解析
+// table表格
+// table 数据格式转换
 function toolbar_parseTableData(res) {
     if(res && res.success){
         return {
@@ -97,7 +98,6 @@ function toolbar_setRowbar(data) {
                 '</div>\n';
     toolbar.append(html);
 }
-
 // 增删改等方法的封装用于页面的重写
 // 新增
 function toolbar_add(event, iname, url, object, zindex, w, h) {
@@ -140,7 +140,14 @@ function toolbar_del(event, iname, url, object, zindex, w, h) {
         }
     });
 }
-
+// 扩展头工具栏
+function toolbar_event_extend(event, iname, url, data, zindex) {
+    layer.msg("点击" + iname);
+}
+// 扩展行工具栏
+function rowbar_event_extend(event, iname, url, data, zindex) {
+    layer.msg("点击" + iname);
+}
 // 删除前
 function toolbar_beforeDel(iname, url, ids, object) {
     return true;
@@ -155,7 +162,6 @@ function toolbar_beforeSubmit(object) {
     console.log("toolbar_beforeSubmit");
     return true;
 }
-
 // 页面打开后
 function toolbar_openSuccess(object) {
     console.log('toolbar_openSuccess');
@@ -187,7 +193,6 @@ function toolbar_saveSuccess(res) {
     }
     parent.layer.alert(res.message);
 }
-
 // 设置弹出层按钮，可设置无限个按钮,当前最多5个，配合按钮回调
 function toolbar_setFootButton() {
     var btn = [];
@@ -202,8 +207,7 @@ function toolbar_footButton2_callback(index, layero) {
     // 禁用点击该按钮关闭页面
     return false;
 }
-
-// 工具栏事件实现方法：新增、修改、详情
+// 表格工具栏事件实现方法：新增、编辑、查看，打开弹出层表单
 function toolbar_event_impl(event, iname, url, object, zindex, w, h) {
     // 检测url
     if(url === 'null' || url === ''){
@@ -237,16 +241,17 @@ function toolbar_event_impl(event, iname, url, object, zindex, w, h) {
             // 层级置顶
             layer.setTop(layero); //重点2
             // 获取弹出窗口
-             var iframeWin = window[layero.find('iframe')[0]['name']];
+            var iframeWin = window[layero.find('iframe')[0]['name']];
+            // 传参子页面
+            iframeWin.formParam = {
+                readonly:'detail' === event ? true : false,        // 是否只读
+                postData:'add' === event ? false : true,           // 是否获取表单数据
+                url:url,                                           // 获取表单数据URL
+                saveUrl:saveUrl,                                   // 表单提交保存URL
+                data:object                                       // 当前对象
+            };
+            // 页面打开后
             iframeWin.toolbar_openSuccess(object);
-             // 传参子页面
-             iframeWin.formParam = {
-                 readonly:'detail' === event ? true : false,        // 是否只读
-                 postData:'add' === event ? false : true,           // 是否获取表单数据
-                 url:url,                                           // 获取表单数据URL
-                 saveUrl:saveUrl,                                   // 表单提交保存URL
-                 data:object                                       // 当前对象
-             };
         },
         yes:function (index,layero) {
             toolbar_footButton1_callback(index, layero);
@@ -259,8 +264,7 @@ function toolbar_event_impl(event, iname, url, object, zindex, w, h) {
         }
     });
 }
-
-//监听头工具栏事件
+// 监听表格头工具栏事件
 function toolbar_table_toolbarOn(layFilter,layui) {
     var table = layui.table;
     var layer = layui.layer;
@@ -337,15 +341,13 @@ function toolbar_table_toolbarOn(layFilter,layui) {
         }
     });
 }
-// 扩展头工具栏
-function toolbar_event_extend(event, iname, url, data, zindex) {
-    layer.msg("点击" + iname);
-}
-// 扩展行工具栏
-function rowbar_event_extend(event, iname, url, data, zindex) {
-    layer.msg("点击" + iname);
-}
 
+// form 表单
+// 表单取消按钮 - 关闭当前页面
+function toolbar_form_cancel() {
+    var index = parent.layer.getFrameIndex(window.name);
+    parent.layer.close(index);
+}
 // 填充表单数据
 function toolbar_form_fillData(id, data) {
     var formObj = $("#" + id);
@@ -385,10 +387,12 @@ function toolbar_form_fillData(id, data) {
         }
     }
 }
-// 表单取消按钮 - 关闭当前页面
-function toolbar_form_cancel() {
-    var index = parent.layer.getFrameIndex(window.name);
-    parent.layer.close(index);
+// 设置表单只读
+function toolbar_form_readonly(id) {
+    $("#" + id).find('select').attr('disabled',true);
+    $("#" + id).find('input,textarea').attr('readonly',true);
+    $("#" + id).find('input[type="checkbox"]').prop('disabled', true);
+    $("#" + id).find('button[lay-submit]').remove();
 }
 // 表单打开后
 function toolbar_form_openSuccess(form, formParam) {
@@ -430,10 +434,7 @@ function toolbar_form_openSuccess(form, formParam) {
                     toolbar_form_fillData('form', res);
                     // 设置只读，隐藏提交按钮
                     if(formParam.readonly){
-                        $('#form').find('input,textarea').attr('readonly',true);
-                        $('#form').find('select').attr('disabled',true);
-                        $('#state').prop('disabled', true);
-                        $('.ibase-button').remove();
+                        toolbar_form_readonly('form');
                     }
                     form.render();
                     toolbar_loadSuccess(res);

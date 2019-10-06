@@ -5,7 +5,7 @@
     <meta content="text/html;charset=UTF-8" http-equiv="content-type">
     <link href="/resources/common/commonCss.css" hreflang="zh_CN" rel="stylesheet" type="text/css">
 <body>
-<form id="form" class="layui-form ibase-form" action="" lay-filter="form">
+<form id="form" class="layui-form layui-form-pane ibase-form" action="" lay-filter="form">
     <div style="display: none;">
         <input name="id">
     </div>
@@ -59,7 +59,7 @@
             </div>
         </div>
     </div>
-    <div class="layui-form-item">
+    <div class="layui-form-item" pane>
         <label class="layui-form-label">数据状态</label>
         <div class="layui-input-block">
             <input id="state" type="checkbox" name="state"   value="state_001" lay-filter="state" lay-skin="switch" lay-text="启用|停用">
@@ -73,7 +73,7 @@
     </div>
     <div class="layui-form-item">
         <div class="layui-input-block">
-            <button class="layui-btn ibase-button" lay-submit lay-filter="submit">提交</button>
+            <button class="layui-btn" lay-submit lay-filter="submit">提交</button>
             <button class="layui-btn layui-btn-primary" type="button" onclick="toolbar_form_cancel()">取消</button>
         </div>
     </div>
@@ -135,26 +135,21 @@
                 // 表单数据初始化
                 toolbar_form_openSuccess(form, formParam);
                 form.render('checkbox');
+                // 设置选中行为父节点
+                if(formParam.data && formParam.data.length > 0){
+                    layui.use(['form','jquery'], function() {
+                        $('#psn').val(formParam.data[0].sn);
+                        layui.form.render('select');
+                    });
+                }
             },
             function error(msg) {
                 layer.alert(msg);
             });
     });
 
-    function toolbar_openSuccess(object) {
-        if(object && object.length > 0){
-            // 设置选中行为父节点
-            console.log(object[0].sn);
-            setTimeout(function () {
-                layui.use(['form','jquery'], function(){
-                    $('#psn').val(object[0].sn);
-                    layui.form.render('select');
-                });
-            },500);
-        }
-    }
-
     function toolbar_loadSuccess(object) {
+        // zero父节点不可编辑
         if(object && object.psn === 'zero'){
             var select = document.getElementById('psn');
             select.options.add(new Option('zero', 'zero',true, true));

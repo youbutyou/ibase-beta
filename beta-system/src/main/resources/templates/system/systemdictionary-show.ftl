@@ -6,7 +6,7 @@
     <link href="/resources/common/commonCss.css" hreflang="zh_CN" rel="stylesheet" type="text/css">
 </head>
 <body>
-<div id="home1" class="layui-layout-body">
+<div class="layui-layout-body">
     <div style="display: none;">
         <input id="modulesn" name="modulesn" th:value="${modulesn}">
     </div>
@@ -26,7 +26,6 @@
         // 获取工具栏
         toolbar_table_getToolbar(modulesn,layui);
         // 数据初始化
-        var table = layui.table;
         var treetable = layui.treetable;
         // 加载table
         tableRender = function(){
@@ -37,7 +36,7 @@
                 where:{
                     pagination:'false'
                 },
-                height: $('#home1').height(),
+                height: $('.layui-layout-body').height(),
                 initSort:'orderNumber',
                 loading:true,
                 toolbar: '#tool_bar',
@@ -63,35 +62,6 @@
                     // 数据渲染结束
                 }
             });
-            // table.render({
-            //     elem: '#list_data',
-            //     method:'POST',
-            //     url: '/systemdictionary/list',
-            //     height: $('#home1').height(),
-            //     title: '用户表',
-            //     page: true,
-            //     limit:10,
-            //     limits:[10,20,30,50,100],
-            //     initSort:'orderNumber',
-            //     loading:true,
-            //     toolbar: '#tool_bar',
-            //     // ,totalRow: true //开启合计行
-            //     cols: [[
-            //         {checkbox: true}
-            //         ,{type: 'numbers', title: '序号'}
-            //         ,{field: 'id', title: 'ID',hide:true}
-            //         ,{field: 'sn', title: '编码'}
-            //         ,{field: 'iname', title: '名称'}
-            //         ,{field: 'fileType', title: '文件类型', templet:'#fileTypeTpl'}
-            //         ,{field: 'state', title: '数据状态', templet: '#stateTpl'}
-            //         ,{fixed: 'right', align:'center', toolbar: '#row_bar'}
-            //     ]],
-            //     parseData: function(res) {
-            //         return toolbar_parseTableData(res);
-            //     },done: function(res, curr, count){
-            //         //如果是直接赋值的方式，res即为：{data: [], count: 99} data为当前页数据、count为数据总长度、curr为当前页码
-            //     }
-            // });
         };
         tableRender();
         //监听工具栏事件

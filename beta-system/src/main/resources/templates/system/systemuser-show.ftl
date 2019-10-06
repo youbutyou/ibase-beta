@@ -6,7 +6,7 @@
     <link href="/resources/common/commonCss.css" hreflang="zh_CN" rel="stylesheet" type="text/css">
 </head>
 <body>
-<div id="home1" class="layui-layout-body">
+<div class="layui-layout-body">
     <div style="display: none;">
         <input id="modulesn" name="modulesn" th:value="${modulesn}">
     </div>
@@ -29,7 +29,7 @@
                 elem: '#list_data',
                 method:'POST',
                 url: '/systemuser/list',
-                height: $('#home1').height(),
+                height: $('.layui-layout-body').height(),
                 title: '用户表',
                 page: true,
                 limit:10,

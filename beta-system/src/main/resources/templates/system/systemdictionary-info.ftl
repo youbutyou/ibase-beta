@@ -5,7 +5,7 @@
     <meta content="text/html;charset=UTF-8" http-equiv="content-type">
     <link href="/resources/common/commonCss.css" hreflang="zh_CN" rel="stylesheet" type="text/css">
 <body>
-<form id="form" class="layui-form ibase-form" action="" lay-filter="form">
+<form id="form" class="layui-form layui-form-pane ibase-form" action="" lay-filter="form">
     <div style="display: none;">
         <input name="id">
     </div>
@@ -33,7 +33,7 @@
             <select id="fileType" name="fileType" lay-verify="required" lay-filter="fileType"></select>
         </div>
     </div>
-    <div class="layui-form-item">
+    <div class="layui-form-item" pane>
         <label class="layui-form-label">数据状态</label>
         <div class="layui-input-block">
             <input id="state" name="state" type="checkbox" lay-skin="switch" lay-text="启用|停用">
@@ -47,7 +47,7 @@
     </div>
     <div class="layui-form-item">
         <div class="layui-input-block">
-            <button class="layui-btn ibase-button" lay-submit lay-filter="submit">提交</button>
+            <button class="layui-btn" lay-submit lay-filter="submit">提交</button>
             <button class="layui-btn layui-btn-primary" type="button" onclick="toolbar_form_cancel()">取消</button>
         </div>
     </div>
@@ -100,6 +100,7 @@
             });
     });
     function toolbar_loadSuccess(object) {
+        // zero父节点不可编辑
         if(object && object.psn === 'zero'){
             var select = document.getElementById('psn');
             select.options.add(new Option('zero', 'zero',true, true));
